@@ -1,5 +1,5 @@
 import {PlatformTest} from "@tsed/platform-http/testing";
-import {caching as cacheManager, multiCaching} from "cache-manager";
+import {createCache} from "cache-manager";
 
 import {UseCache} from "../decorators/useCache.js";
 import {getPrefix} from "../utils/getPrefix.js";
@@ -13,6 +13,20 @@ function createCacheFixture() {
     }),
     set: vi.fn().mockImplementation((key, value) => {
       return Promise.resolve(map.set(key, value));
+    }),
+    ttl: vi.fn().mockImplementation((key) => {
+      return Promise.resolve(map.get(key));
+    }),
+    mget: vi.fn().mockImplementation((keys) => {
+      return Promise.resolve(keys.map((key) => map.get(key)));
+    }),
+    mset: vi.fn().mockImplementation((keys, values) => {
+      keys.forEach((key, index) => map.set(key, values[index]));
+      return Promise.resolve();
+    }),
+    mdel: vi.fn().mockImplementation((keys) => {
+      keys.forEach((key) => map.delete(key));
+      return Promise.resolve();
     }),
     wrap: vi.fn().mockImplementation((key, fn) => {
       return fn();
@@ -42,7 +56,7 @@ describe("PlatformCache", () => {
     beforeEach(async () => {
       caching = createCacheFixture();
 
-      vi.mocked(cacheManager).mockReturnValue(caching as any);
+      vi.mocked(createCache).mockReturnValue(caching as any);
 
       await PlatformTest.create({
         cache: {
@@ -58,7 +72,6 @@ describe("PlatformCache", () => {
 
     it("should create single cache", async () => {
       const cacheManager = PlatformTest.get<PlatformCache>(PlatformCache);
-
       expect(cacheManager.disabled()).toEqual(false);
 
       await cacheManager.set("key", "value");
@@ -87,7 +100,7 @@ describe("PlatformCache", () => {
     beforeEach(async () => {
       caching = createCacheFixture();
 
-      vi.mocked(cacheManager).mockReturnValue(caching as any);
+      vi.mocked(createCache).mockReturnValue(caching as any);
 
       await PlatformTest.create({
         cache: {
@@ -289,7 +302,7 @@ describe("PlatformCache", () => {
     beforeEach(() => {
       caching = createCacheFixture();
 
-      vi.mocked(multiCaching).mockReturnValue(caching as any);
+      vi.mocked(createCache).mockReturnValue(caching as any);
 
       return PlatformTest.create({
         cache: {

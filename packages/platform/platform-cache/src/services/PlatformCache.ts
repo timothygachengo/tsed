@@ -4,7 +4,9 @@ import {isClass, isFunction, isString, Type} from "@tsed/core";
 import {Configuration, Inject, InjectorService, Module} from "@tsed/di";
 import {deserialize, JsonDeserializerOptions, serialize} from "@tsed/json-mapper";
 import {Logger} from "@tsed/logger";
-import type {Cache, CachingConfig, MultiCache} from "cache-manager";
+import type {Cache, CreateCacheOptions} from "cache-manager";
+import {CacheManagerStore, createCache} from "cache-manager";
+import {Keyv} from "keyv";
 
 import {PlatformCacheSettings} from "../interfaces/interfaces.js";
 import {PlatformCachedObject} from "../interfaces/PlatformCachedObject.js";
@@ -14,7 +16,7 @@ const defaultKeyResolver = (args: any[]) => {
   return args.map((arg: any) => (isClass(arg) ? JSON.stringify(serialize(arg)) : arg)).join(":");
 };
 
-export type CacheManager = Cache | MultiCache;
+export type CacheManager = Cache;
 export type Ttl = number | ((result: any) => number);
 
 const storage: AsyncLocalStorage<{forceRefresh: boolean}> = new AsyncLocalStorage();
@@ -74,8 +76,8 @@ export class PlatformCache {
   }
 
   ttl(key: string) {
-    if (this.cache && "store" in this.cache && this.cache.store.ttl) {
-      return this.cache.store.ttl(key);
+    if (this.cache && "stores" in this.cache) {
+      return this.cache.ttl(key);
     }
 
     return Promise.resolve();
@@ -93,7 +95,7 @@ export class PlatformCache {
     return Promise.resolve(deserialize(this.cache?.get<T>(key), options));
   }
 
-  async set<T>(key: string, value: any, options?: CachingConfig<T>): Promise<T | undefined> {
+  async set<T>(key: string, value: any, options?: CreateCacheOptions): Promise<T | undefined> {
     await this.cache?.set(key, value, options?.ttl);
     return;
   }
@@ -140,20 +142,24 @@ export class PlatformCache {
     await this.cache?.reset();
   }
 
-  keys(...args: any[]): Promise<string[]> {
-    if (this.cache && "store" in this.cache && this.cache.store.keys) {
-      return this.cache.store.keys(...args);
+  keys<T extends any>(...args: string[]): Promise<(T | null)[]> {
+    if (this.cache && "stores" in this.cache) {
+      return this.cache.mget<T>(args);
     }
 
     return Promise.resolve([]);
   }
 
   async deleteKeys(patterns: string): Promise<string[]> {
-    const keys = await this.keys(patterns);
+    const keys = await this.keys<string>(patterns);
 
-    await Promise.all(keys.map((key: string) => this.del(key)));
+    if (this.cache && keys && keys.length > 0) {
+      await this.cache.mdel(keys.filter((key): key is string => key !== null));
+    }
 
-    return keys;
+    const filteredKeys = keys.filter((key): key is string => key !== null);
+
+    return filteredKeys;
   }
 
   /**
@@ -161,9 +167,8 @@ export class PlatformCache {
    * @param patterns
    */
   async getMatchingKeys(patterns: string): Promise<string[]> {
-    const [keys, {default: micromatch}] = await Promise.all([this.keys(), import("micromatch")]);
-
-    return micromatch(keys, patterns);
+    // Use the built-in pattern matching from keys method
+    return this.keys(patterns);
   }
 
   async deleteMatchingKeys(patterns: string): Promise<string[]> {
@@ -183,19 +188,16 @@ export class PlatformCache {
   }
 
   protected async createCacheManager(settings: PlatformCacheSettings) {
-    const {caches, store = "memory", ttl, ...props} = settings;
+    const {store = "memory", ttl, ...props} = settings;
 
-    const {multiCaching, caching} = await import("cache-manager");
-
-    return caches?.length
-      ? multiCaching(caches)
-      : caching(this.mapStore(store), {
-          ...props,
-          ttl
-        });
+    return createCache({
+      stores: this.mapStore(store),
+      ...props,
+      ttl
+    });
   }
 
-  private mapStore(store: "memory" | Function | {create: Function}): any {
+  private mapStore(store: "memory" | CacheManagerStore): any {
     if (!isString(store) && "create" in store) {
       return store.create;
     }
