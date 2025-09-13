@@ -22,7 +22,7 @@ You can also create your own configuration sources by implementing the @@ConfigS
 
 | Type                                                   | Watch mode    | Import                  | Description                                                                                                                        |
 | ------------------------------------------------------ | ------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| [Aws secret managers] | Yes - polling | `@tsed/config-source-aws-secrets` | Load configuration from a Aws Secrets manager. |
+| [Aws secret managers](https://tsed.dev/plugins/premium/config-source/aws-secrets.html) | Yes - polling | `@tsed/config-source-aws-secrets` | Load configuration from a Aws Secrets manager. |
 | [IORedis](/plugins/premium/config-source/ioredis.md)   | Yes           | `@tsed/config-ioredis`  | Load configuration from a Redis database using ioredis. Supports watch mode to reload the configuration when the database changes. |
 | [Mongo](/plugins/premium/config-source/mongo.md)       | Yes           | `@tsed/config-mongo`    | Load configuration from a MongoDB collection. Supports watch mode to reload the configuration when the collection changes.         |
 | [Vault](/plugins/premium/config-source/vault.md)       | Yes - polling | `@tsed/config-vault`    | Load configuration from a HashiCorp Vault. Supports watch mode to reload the configuration when the vault changes.                 |
