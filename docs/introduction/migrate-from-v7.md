@@ -34,6 +34,7 @@ For further details, you can view the full release notes here.
 | Apollo Server v4 support                                                   | [See](/tutorials/graphql.html#apollo) | [#2493](https://github.com/tsedio/tsed/issues/2493)                   |
 | Remove Configurable, Deprecated, Enumerable, ReadOnly, Writable decorators |                                       | [beta.6](https://github.com/tsedio/tsed/releases/tag/v8.0.0-beta.6)   |
 | Remove auto import of `@tsed/platform-log-middleware`                      | [See](#request-logger-doesn-t-work)   |                                                                       |
+| Template lib must be imported explicitly                                   | [See](#template-engines-doesn-t-works | [#3133](https://github.com/tsedio/tsed/issues/3133)                   | 
 
 
 ::: warning
@@ -552,6 +553,18 @@ function alterLog(level: string, data: Record<string, unknown>, $ctx: PlatformCo
 ```
 
 This code example will add the `tenant_id` to the log object when the log level is `info`.
+
+## Template engines doesn't works
+
+Since v8+, you have to import explicitly the template engine you want to use.
+
+For example, using Pug engine, you have to add the following line:
+
+```ts
+import {Configuration} from "@tsed/di";
+import "@tsed/engines/PugEngine.js"; // import Pug engine
+import pug from "pug";
+```
 
 ## Optimization
 
