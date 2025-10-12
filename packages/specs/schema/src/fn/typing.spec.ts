@@ -104,9 +104,6 @@ describe("Functional API typing (inference)", () => {
     expectTypeOf<A>().toEqualTypeOf<number[]>();
     expectTypeOf<Se>().toEqualTypeOf<Set<string>>();
     expectTypeOf<M>().toEqualTypeOf<Map<string, boolean>>();
-
-    // @ts-ignore
-    s.array(123);
   });
   it("should infer collections: array / set / map (long syntax)", () => {
     const arr = s.array().items(s.number());
