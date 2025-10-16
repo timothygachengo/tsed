@@ -121,6 +121,7 @@ You add this code to switch the logger to Json layout in production mode:
 import {env} from "@tsed/core";
 import {Configuration} from "@tsed/di";
 import {$log} from "@tsed/logger";
+import "@tsed/logger/layouts/JsonLayout.js"; // add this line since @tsed/logger v8
 import "@tsed/platform-express";
 
 export const isProduction = process.env.NODE_ENV === Env.PROD;
