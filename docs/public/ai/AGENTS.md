@@ -65,7 +65,7 @@ usage:
 
 plugins:
 marketplace: https://tsed.dev/plugins/
-api: https://api.tsed.io/rest/warehouse
+api: https://api.tsed.dev/rest/warehouse
 notes:
 
 - Discover community and premium plugins to extend the framework (auth, logging, integrations, etc.).
@@ -92,7 +92,7 @@ links:
 - best_practices: https://tsed.dev/introduction/cheat-sheet
 - cli: https://tsed.dev/docs/commands.html
 - plugins_marketplace: https://tsed.dev/plugins/
-- plugins_api: https://api.tsed.io/rest/warehouse
+- plugins_api: https://api.tsed.dev/rest/warehouse
 
 ## Guardrails for AI
 

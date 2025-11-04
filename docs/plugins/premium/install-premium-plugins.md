@@ -97,4 +97,4 @@ pnpm add @tsedio/your-premium-plugin
 
 - **401 Unauthorized or 403 Forbidden**: Ensure your sponsorship is active, the PAT has the `read:packages` scope, and
   your `.npmrc` or `.yarnrc*` files are correctly set up.
-- **Still need help?** Contact [support](mailto:contact@tsed.io) with your GitHub username and details.
+- **Still need help?** Contact [support](mailto:contact@tsed.dev) with your GitHub username and details.

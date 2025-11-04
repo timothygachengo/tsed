@@ -98,7 +98,7 @@ This will generate a Form.io schema with text fields for firstName, lastName, an
 
 ::: tip
 You can play with Formio builder to see the generated schema in
-action: [Form.io Builder](https://formio.tsed.io/?path=/story/reactformio-formbuilder--sandbox&globals=backgrounds.grid:!false).
+action: [Form.io Builder](https://formio.tsed.dev/?path=/story/reactformio-formbuilder--sandbox&globals=backgrounds.grid:!false).
 :::
 
 ## Decorators

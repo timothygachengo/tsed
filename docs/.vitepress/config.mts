@@ -428,7 +428,7 @@ export default defineConfig({
     team,
     apiRedirectUrl: "",
     repo: "tsedio/tsed",
-    githubProxyUrl: "https://api.tsed.io/rest/github/tsedio/tsed",
+    githubProxyUrl: "https://api.tsed.dev/rest/github/tsedio/tsed",
     editLink: {
       pattern: "https://github.com/tsedio/tsed/edit/production/docs/:path"
     },
@@ -477,7 +477,7 @@ export default defineConfig({
         link: "/introduction/ai/develop-with-ai.html"
       },
       {icon: "github", link: "https://github.com/tsedio/tsed"},
-      {icon: "slack", link: "https://slack.tsed.io"},
+      {icon: "slack", link: "https://slack.tsed.dev"},
       {icon: "twitter", link: "https://x.com/TsED_io"}
       // { icon: '', link: 'https://stackoverflow.com/search?q=tsed' },
     ],

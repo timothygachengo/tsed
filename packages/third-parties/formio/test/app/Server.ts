@@ -30,7 +30,7 @@ export {rootDir};
     },
     root: {
       email: "admin@tsed.dev",
-      password: "admin@tsed.io"
+      password: "admin@tsed.dev"
     },
     template
   },

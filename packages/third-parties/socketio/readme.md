@@ -20,7 +20,7 @@
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://tsed.dev/getting-started/">Getting started</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://slack.tsed.io">Slack</a>
+  <a href="https://slack.tsed.dev">Slack</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://twitter.com/TsED_io">Twitter</a>
 </div>
@@ -29,7 +29,8 @@
 
 A package of Ts.ED framework. See website: https://tsed.dev/tutorials/socket-io
 
-Socket.io enable real-time bidirectional event-based communication. It works on every platform, browser or device, focusing equally on reliability and speed.
+Socket.io enable real-time bidirectional event-based communication. It works on every platform, browser or device,
+focusing equally on reliability and speed.
 
 ## Installation
 
@@ -57,8 +58,10 @@ export class Server {}
 ## Socket Service
 
 > Socket.IO allows you to “namespace” your sockets, which essentially means assigning different endpoints or paths.
-> This is a useful feature to minimize the number of resources (TCP connections) and at the same time separate concerns within your application
-> by introducing separation between communication channels. See [namespace documentation](https://socket.io/docs/rooms-and-namespaces/#).
+> This is a useful feature to minimize the number of resources (TCP connections) and at the same time separate concerns
+> within your application
+> by introducing separation between communication channels.
+> See [namespace documentation](https://socket.io/docs/rooms-and-namespaces/#).
 
 All Socket service work under a namespace and you can create one Socket service per namespace.
 
@@ -76,14 +79,17 @@ export class MySocketService {
   nspOther: SocketIO.Namespace; // communication between two namespace
 
   constructor(@IO private io: SocketIO.Server) {}
+
   /**
    * Triggered the namespace is created
    */
   $onNamespaceInit(nsp: SocketIO.Namespace) {}
+
   /**
    * Triggered when a new client connects to the Namespace.
    */
   $onConnection(@Socket socket: SocketIO.Socket, @SocketSession session: SocketSession) {}
+
   /**
    * Triggered when a client disconnects from the Namespace.
    */
@@ -91,7 +97,8 @@ export class MySocketService {
 }
 ```
 
-> @SocketService inherit from @Service decorator. That means, a SocketService can be injected to another Service, Controller or Middleware.
+> @SocketService inherit from @Service decorator. That means, a SocketService can be injected to another Service,
+> Controller or Middleware.
 
 Example:
 
@@ -172,7 +179,9 @@ export class MySocketService {
 > The method accept a promise as returned value.
 
 ::: warning
-Return value is only possible when the method is decorated by [@Emit](https://tsed.dev/api/socketio/emit.html), [@Broadcast](https://tsed.dev/api/socketio/broadcast.html) and [@BroadcastOthers](https://tsed.dev/api/socketio/broadcastothers.html).
+Return value is only possible when the method is decorated
+by [@Emit](https://tsed.dev/api/socketio/emit.html), [@Broadcast](https://tsed.dev/api/socketio/broadcast.html)
+and [@BroadcastOthers](https://tsed.dev/api/socketio/broadcastothers.html).
 :::
 
 ### Socket Session
@@ -197,11 +206,15 @@ export class MySocketService {
 }
 ```
 
-The session represents an arbitrary object that facilitates the storage of session data, allowing the sharing of information between Socket.IO servers.
+The session represents an arbitrary object that facilitates the storage of session data, allowing the sharing of
+information between Socket.IO servers.
 
-In the event of an unexpected disconnection (i.e., when the socket is not manually disconnected using `socket.disconnect()`), the server will store the session of the socket. Upon reconnection, the server will make an attempt to restore the previous session.
+In the event of an unexpected disconnection (i.e., when the socket is not manually disconnected using
+`socket.disconnect()`), the server will store the session of the socket. Upon reconnection, the server will make an
+attempt to restore the previous session.
 
-To enable this behavior, you need to configure the [Connection state recovery](https://socket.io/docs/v4/connection-state-recovery) as follows:
+To enable this behavior, you need to configure
+the [Connection state recovery](https://socket.io/docs/v4/connection-state-recovery) as follows:
 
 ```ts
 import {Configuration} from "@tsed/di";
@@ -222,7 +235,10 @@ import "@tsed/socketio";
 export class Server {}
 ```
 
-> By default, Ts.ED uses the built-in in-memory adapter for session management. However, for production environments, it is recommended to use [the persistent adapters](https://socket.io/docs/v4/connection-state-recovery#compatibility-with-existing-adapters) to enhance reliability.
+> By default, Ts.ED uses the built-in in-memory adapter for session management. However, for production environments, it
+> is recommended to
+> use [the persistent adapters](https://socket.io/docs/v4/connection-state-recovery#compatibility-with-existing-adapters)
+> to enhance reliability.
 
 ### Middlewares
 
@@ -279,7 +295,8 @@ The call sequences is the following for each event request:
 - Middlewares attached with `@SocketUseAfter` on method,
 - Middlewares attached with `@SocketUseAfter` on class.
 
-Middlewares chain use the `Promise` to run it. If one of this middlewares/method emit an error, the first middleware error will be called.
+Middlewares chain use the `Promise` to run it. If one of this middlewares/method emit an error, the first middleware
+error will be called.
 
 ```typescript
 import {SocketService, SocketUseAfter, SocketUseBefore, Emit, Input, Args, SocketSession} from "@tsed/socketio";
@@ -322,7 +339,8 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/tsed#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your
+website. [[Become a sponsor](https://opencollective.com/tsed#sponsor)]
 
 ## License
 
@@ -330,8 +348,15 @@ The MIT License (MIT)
 
 Copyright (c) 2016 - 2022 Romain Lenzotti
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
