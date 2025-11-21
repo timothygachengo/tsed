@@ -1,8 +1,7 @@
-import {Intercept} from "@tsed/di";
-import {DITest} from "@tsed/di";
+import {DITest, Intercept} from "@tsed/di";
 import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
 
-import {DirectusCacheInterceptor} from "../services/DirectusCacheInterceptor.js";
+import {DirectusCacheInterceptor} from "../DirectusCacheInterceptor.js";
 import {Cache} from "./cache.js";
 
 vi.mock("@tsed/di", async () => {

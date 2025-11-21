@@ -163,59 +163,39 @@ import {inject} from "@tsed/di";
 const myService = inject(MyService);
 ```
 
-### Cache Decorator
+### Directus Context Service
 
-Cache method results using Directus cache infrastructure:
-
-```ts
-import {Injectable} from "@tsed/di";
-import {Cache} from "@tsed/directus-sdk";
-
-@Injectable()
-export class ApiClient {
-  @Cache({ttl: 900000})
-  async search(query: string) {
-    // Expensive operation
-    return this.performSearch(query);
-  }
-
-  @Cache({
-    ttl: 60000,
-    keyGenerator: (userId: string) => `user:${userId}`
-  })
-  async getUserById(userId: string) {
-    return this.fetchUser(userId);
-  }
-}
-```
-
-**Options:**
-
-- `ttl` - Time to live in milliseconds (default: 900000ms = 15 minutes)
-- `keyGenerator` - Custom function to generate cache keys
-- `namespace` - Custom namespace for cache keys
-- `useSystemCache` - Use system cache (true) or regular cache (false). Default: true
-
-> Important: to use decorator you have to configure your tsconfig with the appropriate options (
-> `"experimentalDecorators": true`, `"emitDecoratorMetadata": true`)
-
-### Programmatic Cache Binding
-
-Apply cache programmatically using `useDirectusCache`:
+Access Directus context from anywhere in your code:
 
 ```ts
 import {injectable} from "@tsed/di";
-import {useDirectusCache} from "@tsed/directus-sdk";
+import {DirectusContextService} from "@tsed/directus-sdk";
 
-export class JiraIssueClient {
-  search(query: string) {
-    return this.performSearch(query);
+export class MyService {
+  directusContext = inject(DirectusContextService);
+
+  async doSomething() {
+    const context = this.directusContext.get();
+    const schema = await context.getSchema();
+    // Use schema...
+  }
+
+  async getUsersService() {
+    // Convenience method to get ItemsService
+    return this.directusContext.getItemsService("users");
   }
 }
 
-injectable(JiraIssueClient);
-useDirectusCache(JiraIssueClient, "search", {ttl: 900000});
+injectable(MyService);
 ```
+
+**Methods:**
+
+- `set(context)` - Set the Directus context (internal use)
+- `get()` - Get the current Directus context
+- `getItemsService(collection, options?)` - Create an ItemsService for a collection
+
+---
 
 ### Repository Pattern
 
@@ -292,39 +272,87 @@ export default defineEndpoint({
 });
 ```
 
-### Directus Context Service
+### Cache
 
-Access Directus context from anywhere in your code:
+Because `@directus/api/cache` isn't declared as external dependency to build the extension you have to configure the
+rollup bundler to
+exclude it from the build.
+
+So for each extension you have to add the following to the `extension.config.js`, if your extension build fail:
+
+```js
+function externals() {
+  return {
+    name: "external-plus", // this name will show up in logs and errors
+    version: "1.0.0",
+    options(rawOptions) {
+      if (rawOptions.external?.includes("directus:api")) {
+        rawOptions.external.push("@directus/api/cache");
+      }
+
+      return rawOptions;
+    }
+  };
+}
+
+export default {
+  plugins: [externals()]
+};
+```
+
+#### Cache Decorator
+
+Cache method results using Directus cache infrastructure:
+
+```ts
+import {Injectable} from "@tsed/di";
+import {Cache} from "@tsed/directus-sdk/cache";
+
+@Injectable()
+export class ApiClient {
+  @Cache({ttl: 900000})
+  async search(query: string) {
+    // Expensive operation
+    return this.performSearch(query);
+  }
+
+  @Cache({
+    ttl: 60000,
+    keyGenerator: (userId: string) => `user:${userId}`
+  })
+  async getUserById(userId: string) {
+    return this.fetchUser(userId);
+  }
+}
+```
+
+**Options:**
+
+- `ttl` - Time to live in milliseconds (default: 900000ms = 15 minutes)
+- `keyGenerator` - Custom function to generate cache keys
+- `namespace` - Custom namespace for cache keys
+- `useSystemCache` - Use system cache (true) or regular cache (false). Default: true
+
+> Important: to use decorator you have to configure your tsconfig with the appropriate options (
+> `"experimentalDecorators": true`, `"emitDecoratorMetadata": true`)
+
+#### Programmatic Cache Binding
+
+Apply cache programmatically using `useDirectusCache`:
 
 ```ts
 import {injectable} from "@tsed/di";
-import {DirectusContextService} from "@tsed/directus-sdk";
+import {useDirectusCache} from "@tsed/directus-sdk/cache";
 
-export class MyService {
-  directusContext = inject(DirectusContextService);
-
-  async doSomething() {
-    const context = this.directusContext.get();
-    const schema = await context.getSchema();
-    // Use schema...
-  }
-
-  async getUsersService() {
-    // Convenience method to get ItemsService
-    return this.directusContext.getItemsService("users");
+export class JiraIssueClient {
+  search(query: string) {
+    return this.performSearch(query);
   }
 }
 
-injectable(MyService);
+injectable(JiraIssueClient);
+useDirectusCache(JiraIssueClient, "search", {ttl: 900000});
 ```
-
-**Methods:**
-
-- `set(context)` - Set the Directus context (internal use)
-- `get()` - Get the current Directus context
-- `getItemsService(collection, options?)` - Create an ItemsService for a collection
-
----
 
 ## 🔧 Advanced Usage
 

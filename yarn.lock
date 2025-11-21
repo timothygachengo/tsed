@@ -12340,6 +12340,7 @@ __metadata:
     "@tsed/logger-connect": "npm:8.0.4"
     semver: "npm:^7.6.3"
     tslib: "npm:2.8.1"
+    typescript: "npm:5.9.3"
     vitest: "npm:3.2.4"
   peerDependencies:
     "@directus/api": ">=31.0.0"

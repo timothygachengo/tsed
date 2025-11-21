@@ -1,9 +1,8 @@
-import {getCache, getCacheValue, setCacheValue} from "@directus/api/cache";
 import type {Type} from "@tsed/core";
 import {classOf} from "@tsed/core/utils/classOf.js";
 import {nameOf} from "@tsed/core/utils/nameOf.js";
 import {bindIntercept, injectable, type InterceptorContext, type InterceptorMethods} from "@tsed/di";
-import {snakeCase} from "lodash";
+import {snakeCase} from "change-case";
 
 /**
  * Configuration options for the DirectusCacheInterceptor.
@@ -111,6 +110,7 @@ export class DirectusCacheInterceptor implements InterceptorMethods {
    * - The system cache is used by default, which persists across requests
    */
   async intercept(context: InterceptorContext<unknown, DirectusCacheOptions>) {
+    const {getCache, getCacheValue, setCacheValue} = await import("@directus/api/cache");
     const {
       ttl = 900000, // 15 minutes default
       keyGenerator = defaultKeyGenerator,
