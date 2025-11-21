@@ -115,8 +115,8 @@ import {wrapOperation} from "./wrapOperation.js";
  * @see {@link DirectusContextService} to access Directus context
  * @see {@link https://docs.directus.io/extensions/operations.html} Directus Operations Documentation
  */
-export function defineOperationApi<Options = Record<string, unknown>>(config: OperationApiConfig<Options>) {
-  return oDefineOperationApi({
+export function defineOperationApi<Options = Record<string, unknown>>(config: OperationApiConfig<Options>): OperationApiConfig<Options> {
+  return oDefineOperationApi<Options>({
     ...config,
     handler: wrapOperation(config.handler)
   });
