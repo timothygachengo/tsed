@@ -1,5 +1,4 @@
 import type {Type} from "@tsed/core";
-import {JsonSchema} from "@tsed/schema";
 
 export interface ConfigSourceOptions<Opts = any> {
   /**
@@ -28,9 +27,9 @@ export interface ConfigSourceOptions<Opts = any> {
    */
   options: Opts;
   /**
-   * The schema to validate the configuration values against.
+   * A JsonSchema instance to validate the configuration values against.
    */
-  validationSchema?: JsonSchema;
+  validationSchema?: {toJSON(opts: Record<string, unknown>): Record<string, unknown> & {required?: string[]}};
   /**
    * Enable FileSystem Watch mode. ConfigSource must implement the `watch()` method.
    */
@@ -55,7 +54,9 @@ export interface ConfigSource<Opts = any> {
   options: Opts;
 
   $onInit?(): Promise<void> | void;
+
   $onDestroy?(): Promise<void> | void;
+
   /**
    * Load configuration from the source.
    */
