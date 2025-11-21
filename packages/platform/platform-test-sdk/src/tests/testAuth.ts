@@ -1,7 +1,7 @@
 import {useDecorators} from "@tsed/core";
 import {Controller, Inject, Injectable} from "@tsed/di";
 import {BadRequest, Forbidden, Unauthorized} from "@tsed/exceptions";
-import {Req, Res} from "@tsed/platform-http";
+import {Req} from "@tsed/platform-http";
 import {PlatformTest} from "@tsed/platform-http/testing";
 import {Middleware, UseAuth} from "@tsed/platform-middlewares";
 import {Context} from "@tsed/platform-params";
@@ -9,7 +9,7 @@ import {Get, In, Post, Returns, Security} from "@tsed/schema";
 import SuperTest from "supertest";
 import {afterAll, beforeAll, describe, expect, it} from "vitest";
 
-import baseSpec from "../data/swagger.json";
+import baseSpec from "../data/swagger.json" with {type: "json"};
 import {PlatformTestingSdkOpts} from "../interfaces/index.js";
 
 @Injectable()

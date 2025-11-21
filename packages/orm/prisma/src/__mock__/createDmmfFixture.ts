@@ -1,5 +1,5 @@
-import dmmf from "./dmmf.json";
-import dmmfTypes from "./dmmf.types.json";
+import dmmf from "./dmmf.json" with {type: "json"};
+import dmmfTypes from "./dmmf.types.json" with {type: "json"};
 
 export function createDmmfFixture(): any {
   return dmmf;

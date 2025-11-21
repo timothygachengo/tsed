@@ -49,7 +49,7 @@
     "formio": "4.2.5",
     "mongodb": "^6.9.0",
     "mongoose": "8.12.2",
-    "typescript": "5.4.5",
+    "typescript": "5.9.3",
     "vitest": "3.2.4"
   },
   "peerDependencies": {

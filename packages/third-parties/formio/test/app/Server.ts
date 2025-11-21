@@ -12,7 +12,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import methodOverride from "method-override";
 
-import template from "../template/project.json";
+import template from "../template/project.json" with {type: "json"};
 
 const rootDir = import.meta.dirname; // automatically replaced by import.meta.dirname on build
 export {rootDir};

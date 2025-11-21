@@ -93,3 +93,5 @@ tools/**/dist
 !.yarn/cache
 !.yarn/sdks
 !.yarn/versions
+
+tsconfig.*.tsbuildinfo
