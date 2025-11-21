@@ -17,6 +17,7 @@ function print(o: any) {
 $log.appenders.clear();
 $log.appenders.set("stdout", {
   type: "connect",
+  levels: ["info", "warn", "error", "trace", "debug"],
   options: {
     logger: {
       info: (o: any) => (cmsLogger.info as any)(print(o)),
