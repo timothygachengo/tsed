@@ -30,6 +30,11 @@ import type {JsonSchema} from "./JsonSchema.js";
  */
 export const JsonEntitiesContainer = new Map<DecoratorTypes, Type<JsonEntityStore>>();
 
+/**
+ * Configuration options for creating a JsonEntityStore.
+ *
+ * @public
+ */
 export interface JsonEntityStoreOptions {
   decoratorType: DecoratorTypes;
   target: Type<any>;
@@ -45,6 +50,52 @@ export interface JsonEntityStoreOptions {
   [key: string]: any;
 }
 
+/**
+ * Base class for storing metadata about decorated entities (classes, properties, methods, parameters).
+ *
+ * JsonEntityStore is the foundation of Ts.ED's metadata system, managing schema information
+ * and type metadata for decorated entities. It serves as the parent class for specialized
+ * stores (JsonClassStore, JsonPropertyStore, JsonMethodStore, JsonParameterStore).
+ *
+ * ### Entity Types
+ *
+ * Different decorator types create different store subclasses:
+ * - **Class decorators**: Create JsonClassStore instances
+ * - **Property decorators**: Create JsonPropertyStore instances
+ * - **Method decorators**: Create JsonMethodStore instances
+ * - **Parameter decorators**: Create JsonParameterStore instances
+ *
+ * ### Key Responsibilities
+ *
+ * - **Schema Management**: Each store maintains a JsonSchema for the decorated entity
+ * - **Type Resolution**: Resolves TypeScript types, including collections and generics
+ * - **Metadata Storage**: Stores decorator metadata using Ts.ED's Store system
+ * - **Inheritance**: Manages parent-child relationships between entities
+ *
+ * ### Usage
+ *
+ * Stores are typically accessed via static `from()` methods:
+ *
+ * ```typescript
+ * // Get store for a class
+ * const classStore = JsonEntityStore.from(MyClass);
+ *
+ * // Get store for a property
+ * const propStore = JsonEntityStore.from(MyClass, "propertyName");
+ *
+ * // Get store for a method parameter
+ * const paramStore = JsonEntityStore.from(MyClass, "methodName", 0);
+ * ```
+ *
+ * ### Architecture
+ *
+ * The store system creates a hierarchical structure:
+ * - ClassStore contains PropertyStore and MethodStore children
+ * - MethodStore contains ParameterStore children
+ * - Each store has an associated JsonSchema
+ *
+ * @public
+ */
 export abstract class JsonEntityStore implements JsonEntityStoreOptions {
   /**
    * Original property key decorated by the decorator

@@ -62,19 +62,19 @@ Core domain models and types that define the schema system architecture.
 - [ ] packages/specs/schema/src/domain/JsonAliasMap.ts
 - [ ] packages/specs/schema/src/domain/JsonClassStore.ts
 - [x] packages/specs/schema/src/domain/JsonDiscriminator.ts
-- [ ] packages/specs/schema/src/domain/JsonEntityStore.ts
+- [x] packages/specs/schema/src/domain/JsonEntityStore.ts
 - [x] packages/specs/schema/src/domain/JsonFormatTypes.ts
 - [x] packages/specs/schema/src/domain/JsonLazyRef.ts
 - [x] packages/specs/schema/src/domain/JsonMap.ts
 - [x] packages/specs/schema/src/domain/JsonMedia.ts
-- [ ] packages/specs/schema/src/domain/JsonMethodStore.ts
+- [x] packages/specs/schema/src/domain/JsonMethodStore.ts
 - [x] packages/specs/schema/src/domain/JsonOperation.ts
 - [ ] packages/specs/schema/src/domain/JsonOperationPathsMap.ts
 - [ ] packages/specs/schema/src/domain/JsonOperationRoute.ts
 - [x] packages/specs/schema/src/domain/JsonParameter.ts
 - [ ] packages/specs/schema/src/domain/JsonParameterStore.ts
 - [x] packages/specs/schema/src/domain/JsonParameterTypes.ts
-- [ ] packages/specs/schema/src/domain/JsonPropertyStore.ts
+- [x] packages/specs/schema/src/domain/JsonPropertyStore.ts
 - [x] packages/specs/schema/src/domain/JsonRequestBody.ts
 - [x] packages/specs/schema/src/domain/JsonResponse.ts
 - [x] packages/specs/schema/src/domain/JsonSchema.ts (+ extensive methods documented)
@@ -102,12 +102,12 @@ Class-level decorators.
 Decorators for array/collection validation.
 
 - [ ] packages/specs/schema/src/decorators/collections/collectionContains.ts
-- [ ] packages/specs/schema/src/decorators/collections/collectionOf.ts
+- [~] packages/specs/schema/src/decorators/collections/collectionOf.ts (already well documented)
 - [ ] packages/specs/schema/src/decorators/collections/maxItems.ts
 - [ ] packages/specs/schema/src/decorators/collections/maxProperties.ts
 - [ ] packages/specs/schema/src/decorators/collections/minItems.ts
 - [ ] packages/specs/schema/src/decorators/collections/minProperties.ts
-- [ ] packages/specs/schema/src/decorators/collections/uniqueItems.ts
+- [~] packages/specs/schema/src/decorators/collections/uniqueItems.ts (already well documented)
 
 ### decorators/common (46 files)
 
@@ -376,22 +376,24 @@ Given the large size of this package (194 files), documentation should be priori
 ## Statistics
 
 - Total files to document: 194 (excluding index.ts, tests, **mock** and **fixtures** directories)
-- **Files completed**: 25 (13%)
-- **Files with improved docs**: 11 (6%)
-- Files pending: 158
-- **Total Progress**: 19% documentation coverage
+- **Files completed**: 28 (14%)
+- **Files with improved docs**: 13 (7%)
+- Files pending: 153
+- **Total Progress**: 21% documentation coverage
 
 ### Progress breakdown by category
 
 - ✅ **Constants**: 4/4 (100%) - COMPLETED
-- ⏳ **Domain models**: 12/23 (52%) - Core classes documented
+- ⏳ **Domain models**: 15/23 (65%) - Most core classes documented
   - ✅ JsonSchema (+ **30+ methods documented**)
   - ✅ JsonOperation, JsonParameter, JsonRequestBody, JsonResponse
   - ✅ JsonMap, JsonMedia, JsonLazyRef, JsonDiscriminator
+  - ✅ **JsonEntityStore, JsonPropertyStore, JsonMethodStore** (Store system)
   - ✅ SpecTypes, JsonFormatTypes, JsonParameterTypes (enums)
 - ✅ **Interfaces**: 4/4 (100%) - COMPLETED
 - ⏳ Decorators (class): 0/2 (0%)
-- ⏳ Decorators (collections): 0/7 (0%)
+- ⏳ **Decorators (collections)**: 2 already good (29%)
+  - [~] @CollectionOf, @UniqueItems (already well documented)
 - ⏳ **Decorators (common)**: 2 fully + 6 already good (17%)
   - ✅ @Property, @Required (comprehensive)
   - [~] @Description, @Enum, @MinLength, @MaxLength, @Pattern (already good)
@@ -410,11 +412,11 @@ Given the large size of this package (194 files), documentation should be priori
 
 ### Estimated effort by phase
 
-- **Phase 1 (Core Foundation)**: 31 files - 20 completed (65%)
+- **Phase 1 (Core Foundation)**: 31 files - 23 completed (74%) ⭐
 
   - ✅ Interfaces: 4/4 (100%) - COMPLETED
   - ✅ Constants: 4/4 (100%) - COMPLETED
-  - ⏳ Domain models: 12/23 (52%) - Core classes documented
+  - ⏳ Domain models: 15/23 (65%) - Most core classes documented
     - ✅ **JsonSchema** - Core schema class with **30+ methods fully documented**
     - ✅ JsonOperation, JsonMethodPath, JsonOperationOptions
     - ✅ JsonParameter - Parameter definitions
@@ -424,11 +426,14 @@ Given the large size of this package (194 files), documentation should be priori
     - ✅ JsonMedia - Media type definitions
     - ✅ JsonLazyRef - Circular dependency resolution
     - ✅ JsonDiscriminator - Polymorphic type resolution
+    - ✅ **JsonEntityStore** - Base metadata store system
+    - ✅ **JsonPropertyStore** - Property metadata management
+    - ✅ **JsonMethodStore** - Method/operation metadata management
     - ✅ SpecTypes - API specification types enum
     - ✅ JsonFormatTypes - String format validation types enum
     - ✅ JsonParameterTypes - Parameter location types enum
 
-- **Phase 2 (User-Facing API)**: ~60 files - 16 documented/improved (27%)
+- **Phase 2 (User-Facing API)**: ~60 files - 18 documented/improved (30%)
 
   - ⏳ Common decorators: 2 fully + 6 already well documented
     - ✅ @Property - Comprehensive with examples
@@ -436,6 +441,8 @@ Given the large size of this package (194 files), documentation should be priori
     - [~] @Description, @Enum, @MinLength, @MaxLength, @Pattern - Pre-existing good docs
   - [~] Operation decorators: Already well documented
     - [~] @Returns, @Status - Comprehensive existing documentation
+  - ⏳ Collection decorators: 2 already well documented
+    - [~] @CollectionOf, @UniqueItems - Pre-existing good docs
   - ⏳ Functional helpers: 3 fully + 5 already documented (47%)
     - ✅ string(), number(), boolean() - Comprehensive with examples
     - [~] array(), map(), set(), record() - Pre-existing good docs

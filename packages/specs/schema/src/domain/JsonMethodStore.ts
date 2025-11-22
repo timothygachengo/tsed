@@ -8,16 +8,82 @@ import {JsonOperation} from "./JsonOperation.js";
 import {type JsonParameterStore} from "./JsonParameterStore.js";
 import {JsonSchema} from "./JsonSchema.js";
 
+/**
+ * Configuration options for view rendering.
+ *
+ * @public
+ */
 export interface JsonViewOptions {
   path: string;
   options: any;
 }
 
+/**
+ * Configuration options for HTTP redirects.
+ *
+ * @public
+ */
 export interface JsonRedirectOptions {
   status: number | undefined;
   url: string;
 }
 
+/**
+ * Store for method metadata, operations, and parameter information.
+ *
+ * JsonMethodStore manages metadata for controller methods decorated with operation
+ * decorators like `@Get()`, `@Post()`, `@Returns()`, etc. It maintains the JsonOperation
+ * for OpenAPI generation and coordinates method parameters.
+ *
+ * ### Responsibilities
+ *
+ * - **Operation Management**: Maintains JsonOperation for OpenAPI spec generation
+ * - **Parameter Coordination**: Manages child JsonParameterStore instances
+ * - **Middleware Configuration**: Handles before/after/use middleware registration
+ * - **Response Configuration**: Manages return types and status codes
+ * - **Route Information**: Stores HTTP methods, paths, and route metadata
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * // Get method store
+ * const methodStore = JsonEntityStore.from(MyController, "myMethod");
+ *
+ * // Access operation for OpenAPI
+ * const operation = methodStore.operation;
+ *
+ * // Get parameters
+ * const params = methodStore.parameters;
+ *
+ * // Check response type
+ * const returnType = methodStore.type;
+ * ```
+ *
+ * ### Operation Structure
+ *
+ * Each method store contains a JsonOperation that includes:
+ * - HTTP method and path information
+ * - Request parameters (path, query, body, headers)
+ * - Response definitions by status code
+ * - Security requirements
+ * - Tags and metadata
+ *
+ * ### Parameter Management
+ *
+ * The store maintains parameter metadata:
+ * - Parameters stored in `children` map by index
+ * - Accessible via `parameters` or `params` getters
+ * - Each parameter has its own JsonParameterStore
+ *
+ * ### Middleware Integration
+ *
+ * Supports three middleware phases:
+ * - **before**: Execute before the method
+ * - **use**: Execute as main middleware
+ * - **after**: Execute after the method
+ *
+ * @public
+ */
 @JsonEntityComponent(DecoratorTypes.METHOD)
 export class JsonMethodStore extends JsonEntityStore {
   readonly parent: JsonClassStore = JsonEntityStore.from(this.target);
