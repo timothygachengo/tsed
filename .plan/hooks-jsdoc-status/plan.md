@@ -46,7 +46,7 @@ Notes
 
 Files under `packages/hooks/src` (excluding index.ts and tests):
 
-- [ ] packages/hooks/src/Hooks.ts
+- [x] packages/hooks/src/Hooks.ts
 
 ---
 
@@ -58,23 +58,23 @@ Exported symbols to document:
 
 #### Type Aliases
 
-- [ ] `HookRef` - Type defining what can be used as a hook reference (string, symbol, Function, any)
-- [ ] `HookListener` - Type defining a hook listener (Function)
+- [x] `HookRef` - Type defining what can be used as a hook reference (string, symbol, Function, any)
+- [x] `HookListener` - Type defining a hook listener (Function)
 
 #### Classes
 
-- [ ] `Hooks` - Main event hooks management class
+- [x] `Hooks` - Main event hooks management class
 
 #### Constants
 
-- [ ] `hooks` - Global singleton instance of the Hooks class
-- [ ] `$on` - Functional helper bound to hooks.on
-- [ ] `$once` - Functional helper bound to hooks.once
-- [ ] `$off` - Functional helper bound to hooks.off
-- [ ] `$emit` - Functional helper bound to hooks.emit
-- [ ] `$asyncEmit` - Functional helper bound to hooks.asyncEmit
-- [ ] `$alter` - Functional helper bound to hooks.alter
-- [ ] `$asyncAlter` - Functional helper bound to hooks.asyncAlter
+- [x] `hooks` - Global singleton instance of the Hooks class
+- [x] `$on` - Functional helper bound to hooks.on
+- [x] `$once` - Functional helper bound to hooks.once
+- [x] `$off` - Functional helper bound to hooks.off
+- [x] `$emit` - Functional helper bound to hooks.emit
+- [x] `$asyncEmit` - Functional helper bound to hooks.asyncEmit
+- [x] `$alter` - Functional helper bound to hooks.alter
+- [x] `$asyncAlter` - Functional helper bound to hooks.asyncAlter
 
 ---
 
@@ -90,9 +90,9 @@ Since this package has only one file with a focused set of exports, the document
 
 ### Next actions
 
-- [ ] Document type aliases in `Hooks.ts`
-- [ ] Document the `Hooks` class
-- [ ] Document exported constants and functional helpers
+- [x] Document type aliases in `Hooks.ts`
+- [x] Document the `Hooks` class
+- [x] Document exported constants and functional helpers
 - [ ] Validate with `yarn api:build`
 
 ---
@@ -100,10 +100,10 @@ Since this package has only one file with a focused set of exports, the document
 ## Statistics
 
 - Total files to document: 1 (excluding index.ts and tests)
-- Files completed: 0
+- Files completed: 1
 - Files in progress: 0
-- Files pending: 1
-- Completion: 0%
+- Files pending: 0
+- Completion: 100%
 
 ### Symbol breakdown
 
@@ -115,9 +115,9 @@ Total exported symbols: 11
 
 #### By status
 
-- [ ] Documented: 0/11 (0%)
+- [x] Documented: 11/11 (100%)
 - [ ] Partial: 0/11 (0%)
-- [ ] Pending: 11/11 (100%)
+- [ ] Pending: 0/11 (0%)
 
 ---
 
