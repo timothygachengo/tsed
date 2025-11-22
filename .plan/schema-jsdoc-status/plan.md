@@ -58,9 +58,9 @@ Files under `packages/specs/schema/src` (excluding index.ts, tests, **mock** and
 
 Core domain models and types that define the schema system architecture.
 
-- [ ] packages/specs/schema/src/domain/DecoratorContext.ts
-- [ ] packages/specs/schema/src/domain/JsonAliasMap.ts
-- [ ] packages/specs/schema/src/domain/JsonClassStore.ts
+- [~] packages/specs/schema/src/domain/DecoratorContext.ts (marked @ignore - internal)
+- [~] packages/specs/schema/src/domain/JsonAliasMap.ts (marked @ignore - internal)
+- [x] packages/specs/schema/src/domain/JsonClassStore.ts
 - [x] packages/specs/schema/src/domain/JsonDiscriminator.ts
 - [x] packages/specs/schema/src/domain/JsonEntityStore.ts
 - [x] packages/specs/schema/src/domain/JsonFormatTypes.ts
@@ -69,17 +69,17 @@ Core domain models and types that define the schema system architecture.
 - [x] packages/specs/schema/src/domain/JsonMedia.ts
 - [x] packages/specs/schema/src/domain/JsonMethodStore.ts
 - [x] packages/specs/schema/src/domain/JsonOperation.ts
-- [ ] packages/specs/schema/src/domain/JsonOperationPathsMap.ts
-- [ ] packages/specs/schema/src/domain/JsonOperationRoute.ts
+- [x] packages/specs/schema/src/domain/JsonOperationPathsMap.ts
+- [x] packages/specs/schema/src/domain/JsonOperationRoute.ts
 - [x] packages/specs/schema/src/domain/JsonParameter.ts
-- [ ] packages/specs/schema/src/domain/JsonParameterStore.ts
+- [x] packages/specs/schema/src/domain/JsonParameterStore.ts
 - [x] packages/specs/schema/src/domain/JsonParameterTypes.ts
 - [x] packages/specs/schema/src/domain/JsonPropertyStore.ts
 - [x] packages/specs/schema/src/domain/JsonRequestBody.ts
 - [x] packages/specs/schema/src/domain/JsonResponse.ts
 - [x] packages/specs/schema/src/domain/JsonSchema.ts (+ extensive methods documented)
 - [x] packages/specs/schema/src/domain/SpecTypes.ts
-- [ ] packages/specs/schema/src/domain/types.ts
+- [x] packages/specs/schema/src/domain/types.ts
 
 ### interfaces (4 files)
 
@@ -113,14 +113,14 @@ Decorators for array/collection validation.
 
 Common schema decorators for properties and classes.
 
-- [ ] packages/specs/schema/src/decorators/common/additionalProperties.ts
-- [ ] packages/specs/schema/src/decorators/common/allOf.ts
-- [ ] packages/specs/schema/src/decorators/common/allow.ts
-- [ ] packages/specs/schema/src/decorators/common/any.ts
-- [ ] packages/specs/schema/src/decorators/common/anyOf.ts
-- [ ] packages/specs/schema/src/decorators/common/const.ts
+- [x] packages/specs/schema/src/decorators/common/additionalProperties.ts
+- [x] packages/specs/schema/src/decorators/common/allOf.ts
+- [x] packages/specs/schema/src/decorators/common/allow.ts
+- [x] packages/specs/schema/src/decorators/common/any.ts
+- [x] packages/specs/schema/src/decorators/common/anyOf.ts
+- [x] packages/specs/schema/src/decorators/common/const.ts
 - [ ] packages/specs/schema/src/decorators/common/customKey.ts
-- [ ] packages/specs/schema/src/decorators/common/default.ts
+- [x] packages/specs/schema/src/decorators/common/default.ts
 - [ ] packages/specs/schema/src/decorators/common/defaultMsg.ts
 - [~] packages/specs/schema/src/decorators/common/description.ts
 - [ ] packages/specs/schema/src/decorators/common/discriminatorKey.ts
@@ -144,19 +144,19 @@ Common schema decorators for properties and classes.
 - [ ] packages/specs/schema/src/decorators/common/minimum.ts
 - [ ] packages/specs/schema/src/decorators/common/multipleOf.ts
 - [ ] packages/specs/schema/src/decorators/common/name.ts
-- [ ] packages/specs/schema/src/decorators/common/nullable.ts
-- [ ] packages/specs/schema/src/decorators/common/oneOf.ts
-- [ ] packages/specs/schema/src/decorators/common/optional.ts
+- [x] packages/specs/schema/src/decorators/common/nullable.ts
+- [x] packages/specs/schema/src/decorators/common/oneOf.ts
+- [x] packages/specs/schema/src/decorators/common/optional.ts
 - [~] packages/specs/schema/src/decorators/common/pattern.ts
 - [x] packages/specs/schema/src/decorators/common/property.ts
-- [ ] packages/specs/schema/src/decorators/common/readOnly.ts
+- [x] packages/specs/schema/src/decorators/common/readOnly.ts
 - [ ] packages/specs/schema/src/decorators/common/recordOf.ts
 - [x] packages/specs/schema/src/decorators/common/required.ts
 - [ ] packages/specs/schema/src/decorators/common/requiredGroups.ts
 - [ ] packages/specs/schema/src/decorators/common/schema.ts
 - [ ] packages/specs/schema/src/decorators/common/title.ts
 - [ ] packages/specs/schema/src/decorators/common/typeError.ts
-- [ ] packages/specs/schema/src/decorators/common/writeOnly.ts
+- [x] packages/specs/schema/src/decorators/common/writeOnly.ts
 
 ### decorators/config (1 file)
 
@@ -376,15 +376,15 @@ Given the large size of this package (194 files), documentation should be priori
 ## Statistics
 
 - Total files to document: 194 (excluding index.ts, tests, **mock** and **fixtures** directories)
-- **Files completed**: 28 (14%)
+- **Files completed**: 45 (23%)
 - **Files with improved docs**: 13 (7%)
-- Files pending: 153
-- **Total Progress**: 21% documentation coverage
+- Files pending: 136
+- **Total Progress**: 30% documentation coverage
 
 ### Progress breakdown by category
 
 - ✅ **Constants**: 4/4 (100%) - COMPLETED
-- ⏳ **Domain models**: 15/23 (65%) - Most core classes documented
+- ✅ **Domain models**: 23/23 (100%) - COMPLETED ⭐
   - ✅ JsonSchema (+ **30+ methods documented**)
   - ✅ JsonOperation, JsonParameter, JsonRequestBody, JsonResponse
   - ✅ JsonMap, JsonMedia, JsonLazyRef, JsonDiscriminator
@@ -412,11 +412,11 @@ Given the large size of this package (194 files), documentation should be priori
 
 ### Estimated effort by phase
 
-- **Phase 1 (Core Foundation)**: 31 files - 23 completed (74%) ⭐
+- ✅ **Phase 1 (Core Foundation)**: 31 files - 31 completed (100%) ⭐ COMPLETED!
 
   - ✅ Interfaces: 4/4 (100%) - COMPLETED
   - ✅ Constants: 4/4 (100%) - COMPLETED
-  - ⏳ Domain models: 15/23 (65%) - Most core classes documented
+  - ✅ **Domain models: 23/23 (100%) - COMPLETED** ⭐
     - ✅ **JsonSchema** - Core schema class with **30+ methods fully documented**
     - ✅ JsonOperation, JsonMethodPath, JsonOperationOptions
     - ✅ JsonParameter - Parameter definitions
@@ -429,15 +429,33 @@ Given the large size of this package (194 files), documentation should be priori
     - ✅ **JsonEntityStore** - Base metadata store system
     - ✅ **JsonPropertyStore** - Property metadata management
     - ✅ **JsonMethodStore** - Method/operation metadata management
+    - ✅ **JsonClassStore** - Class metadata management (root of hierarchy)
+    - ✅ **JsonParameterStore** - Parameter metadata with pipes and validation
+    - ✅ **JsonOperationPathsMap** - Operation path storage and indexing
+    - ✅ **JsonOperationRoute** - Fully resolved route representation
+    - ✅ **types.ts** - TypeScript utility types (Infer, PropsToShape, CtorToType, UnionToIntersection)
     - ✅ SpecTypes - API specification types enum
     - ✅ JsonFormatTypes - String format validation types enum
     - ✅ JsonParameterTypes - Parameter location types enum
+    - [~] DecoratorContext, JsonAliasMap - Marked @ignore (internal implementation)
 
-- **Phase 2 (User-Facing API)**: ~60 files - 18 documented/improved (30%)
+- **Phase 2 (User-Facing API)**: ~60 files - 30 documented/improved (50%)
 
-  - ⏳ Common decorators: 2 fully + 6 already well documented
+  - ⏳ Common decorators: 14 fully + 6 already well documented (43%)
     - ✅ @Property - Comprehensive with examples
     - ✅ @Required - Comprehensive with use cases
+    - ✅ @AdditionalProperties - Comprehensive with boolean and schema usage
+    - ✅ @AllOf - Schema intersection and composition
+    - ✅ @Allow - Required field allowed values
+    - ✅ @Any - Multi-type support
+    - ✅ @AnyOf - Schema union (at least one match)
+    - ✅ @Nullable - Null type support
+    - ✅ @Const - Fixed value constraints
+    - ✅ @Default - Default value specification
+    - ✅ @OneOf - Exclusive union (exactly one match)
+    - ✅ @Optional - Optional properties and parameters
+    - ✅ @ReadOnly - Read-only fields (responses only)
+    - ✅ @WriteOnly - Write-only fields (requests only, passwords)
     - [~] @Description, @Enum, @MinLength, @MaxLength, @Pattern - Pre-existing good docs
   - [~] Operation decorators: Already well documented
     - [~] @Returns, @Status - Comprehensive existing documentation

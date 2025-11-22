@@ -2,50 +2,45 @@ import {withErrorMsg} from "../../utils/withErrorMsg.js";
 import {JsonEntityFn} from "../common/jsonEntityFn.js";
 
 /**
- * An object instance is valid against `maxProperties` if its number of properties is less than, or equal to, the value of this keyword.
+ * Sets the maximum number of properties allowed on an object.
  *
- * ::: warning
- * The value of this keyword MUST be a non-negative integer.
- * :::
+ * The `@MaxProperties()` decorator validates that an object has at most the specified
+ * number of properties. This is useful for limiting dynamic object sizes, preventing
+ * excessive data structures, or enforcing schema constraints on flexible objects.
  *
- * ::: warning
- * This decorator will be removed in v7.
- * For v6 user, use @@MaxProperties@@ from @tsed/schema instead of @tsed/platform-http.
- * :::
+ * ### On Property
  *
- * ## Example
- * ### On prop
  * ```typescript
- * class Model {
- *    @MaxProperties(10)
- *    property: any;
+ * class ConfigModel {
+ *   @MaxProperties(5)
+ *   metadata: Record<string, any>;
+ *   // Object can have at most 5 properties
  * }
  * ```
  *
- * Will produce:
- *
+ * Generated schema:
  * ```json
  * {
  *   "type": "object",
  *   "properties": {
- *     "property": {
- *       "type": "any",
- *       "maxProperties": 10
+ *     "metadata": {
+ *       "type": "object",
+ *       "maxProperties": 5
  *     }
  *   }
  * }
  * ```
  *
- * ### On class
+ * ### On Class
  *
  * ```typescript
  * @MaxProperties(10)
- * class Model {
+ * class DynamicModel {
+ *   // Class instances can have at most 10 properties total
  * }
  * ```
  *
- * Will produce:
- *
+ * Generated schema:
  * ```json
  * {
  *   "type": "object",
@@ -56,20 +51,91 @@ import {JsonEntityFn} from "../common/jsonEntityFn.js";
  * ### On Parameter
  *
  * ```typescript
- *
- * class Model {
- *   method(@Any() @MaxProperties(10) obj: any){}
+ * @Controller("/api")
+ * class ApiController {
+ *   @Post("/config")
+ *   updateConfig(
+ *     @BodyParams() @MaxProperties(10) config: any
+ *   ) {
+ *     // Config object limited to 10 properties
+ *   }
  * }
  * ```
  *
- * @param {number} maxProperties The maximum properties allowed on the given object
+ * ### With MinProperties - Range Validation
+ *
+ * ```typescript
+ * class FilterModel {
+ *   @MinProperties(1)
+ *   @MaxProperties(5)
+ *   filters: Record<string, string>;
+ *   // Must have 1-5 filter properties
+ * }
+ * ```
+ *
+ * ### Dynamic Objects
+ *
+ * ```typescript
+ * class UserPreferences {
+ *   @MaxProperties(20)
+ *   @AdditionalProperties({ type: "string" })
+ *   settings: Record<string, string>;
+ *   // Up to 20 custom settings, all string values
+ * }
+ * ```
+ *
+ * ### Validation Examples
+ *
+ * ```typescript
+ * @MaxProperties(2)
+ * data: object;
+ *
+ * // Valid:
+ * {}                         // 0 properties (≤ 2)
+ * { a: 1 }                   // 1 property (≤ 2)
+ * { a: 1, b: 2 }             // 2 properties (≤ 2)
+ *
+ * // Invalid:
+ * { a: 1, b: 2, c: 3 }       // 3 properties (> 2)
+ * ```
+ *
+ * ### Use Cases
+ *
+ * - **API Rate Limiting**: Restrict filter/query parameter counts
+ * - **Performance**: Prevent overly complex objects
+ * - **Schema Constraints**: Limit dynamic data structures
+ * - **Configuration**: Cap number of custom settings
+ * - **Security**: Prevent payload bloat attacks
+ *
+ * ### Flexible Schemas
+ *
+ * ```typescript
+ * class ExtensibleModel {
+ *   @Property()
+ *   id: string;
+ *
+ *   @Property()
+ *   name: string;
+ *
+ *   @MaxProperties(5)
+ *   @AdditionalProperties(true)
+ *   // 2 defined properties + up to 3 additional properties
+ * }
+ * ```
+ *
+ * ### Important Notes
+ *
+ * - The value must be a **non-negative integer** (0 or greater)
+ * - Throws an error if a negative value is provided
+ * - Empty objects (`{}`) always pass maxProperties validation
+ * - Counts all properties, including inherited and additional ones
+ * - Can be combined with custom error messages using ajv-errors
+ *
+ * @param maxProperties - Maximum number of properties allowed (must be non-negative)
+ *
  * @decorator
  * @validation
- * @swagger
- * @schema
- * @input
- * @collections
- * @ajv-errors
+ * @public
  */
 export const MaxProperties = withErrorMsg("maxProperties", (maxProperties: number) => {
   if (maxProperties < 0) {

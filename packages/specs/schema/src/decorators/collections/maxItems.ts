@@ -2,51 +2,121 @@ import {withErrorMsg} from "../../utils/withErrorMsg.js";
 import {JsonEntityFn} from "../common/jsonEntityFn.js";
 
 /**
- * The value `maxItems` MUST be a non-negative integer.
+ * Sets the maximum number of items allowed in an array.
  *
- * An array instance is valid against `maxItems` if its size is less than, or equal to, the value of this keyword.
+ * The `@MaxItems()` decorator validates that an array has at most the specified number
+ * of elements. This is useful for enforcing size limits on collections to prevent
+ * excessive data, manage performance, or enforce business rules.
  *
- * :: warning
- * The value `maxItems` MUST be a non-negative integer.
- * :::
- *
- * :: warning
- * This decorator will be removed in v7.
- * For v6 user, use @@MaxItems@@ from @tsed/schema instead of @tsed/platform-http.
- * :::
- *
- * ## Example
+ * ### Basic Usage
  *
  * ```typescript
- * class Model {
- *    @CollectionOf(String)
- *    @MaxItems(10)
- *    property: string[];
+ * class UserModel {
+ *   @CollectionOf(String)
+ *   @MaxItems(5)
+ *   tags: string[];
+ *   // Maximum 5 tags allowed
  * }
  * ```
  *
- * Will produce:
- *
+ * Generated schema:
  * ```json
  * {
  *   "type": "object",
  *   "properties": {
- *     "property": {
- *       "type": "number",
- *       "maxItems": 10
+ *     "tags": {
+ *       "type": "array",
+ *       "maxItems": 5,
+ *       "items": {
+ *         "type": "string"
+ *       }
  *     }
  *   }
  * }
  * ```
  *
- * @param {number} maxItems
+ * ### With MinItems - Range Validation
+ *
+ * ```typescript
+ * class TeamModel {
+ *   @CollectionOf(String)
+ *   @MinItems(1)
+ *   @MaxItems(10)
+ *   members: string[];
+ *   // Must have between 1 and 10 members
+ * }
+ * ```
+ *
+ * ### API Rate Limiting
+ *
+ * ```typescript
+ * class BulkRequest {
+ *   @CollectionOf(Number)
+ *   @MaxItems(100)
+ *   ids: number[];
+ *   // Limit bulk operations to 100 items
+ * }
+ * ```
+ *
+ * ### File Uploads
+ *
+ * ```typescript
+ * class FileUpload {
+ *   @CollectionOf(Object)
+ *   @MaxItems(5)
+ *   attachments: File[];
+ *   // Maximum 5 file attachments
+ * }
+ * ```
+ *
+ * ### Validation Examples
+ *
+ * ```typescript
+ * @MaxItems(3)
+ * items: string[];
+ *
+ * // Valid:
+ * []                    // 0 items (≤ 3)
+ * ["a"]                 // 1 item (≤ 3)
+ * ["a", "b", "c"]       // 3 items (≤ 3)
+ *
+ * // Invalid:
+ * ["a", "b", "c", "d"]  // 4 items (> 3)
+ * ```
+ *
+ * ### Use Cases
+ *
+ * - **Performance**: Limit collection sizes to prevent memory issues
+ * - **Business Rules**: Enforce maximum quantities (cart items, selections)
+ * - **API Protection**: Prevent abuse with excessive bulk requests
+ * - **UI Constraints**: Match front-end limitations (max selections)
+ * - **Data Quality**: Encourage focused, manageable data sets
+ *
+ * ### Combining with Other Validators
+ *
+ * ```typescript
+ * class SearchQuery {
+ *   @CollectionOf(String)
+ *   @MinItems(1)
+ *   @MaxItems(10)
+ *   @UniqueItems()
+ *   keywords: string[];
+ *   // 1-10 unique search keywords
+ * }
+ * ```
+ *
+ * ### Important Notes
+ *
+ * - The value must be a **non-negative integer** (0 or greater)
+ * - Throws an error if a negative value is provided
+ * - Empty arrays (length 0) always pass maxItems validation
+ * - Can be combined with custom error messages using ajv-errors
+ *
+ * @param maxItems - Maximum number of items allowed (must be non-negative)
+ *
  * @decorator
  * @validation
- * @swagger
- * @schema
- * @input
- * @collections
- * @ajv-errors
+ * @public
  */
 export const MaxItems = withErrorMsg("maxItems", (maxItems: number) => {
   if (maxItems < 0) {

@@ -1,14 +1,82 @@
 import type {JsonSchema} from "./JsonSchema.js";
 
-// Extract the inferred Type parameter from a SchemaShape
+/**
+ * Extracts the inferred TypeScript type from a JsonSchema.
+ *
+ * This utility type enables type-safe schema usage by extracting the type parameter
+ * from JsonSchema instances.
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * const userSchema = JsonSchema.from({ type: "object" });
+ * type User = Infer<typeof userSchema>; // Extracts the type
+ * ```
+ *
+ * @typeParam S - The JsonSchema to extract the type from
+ *
+ * @public
+ */
 export type Infer<S> = S extends JsonSchema<infer T> ? T : never;
 
-// Helper to map object properties definition to a concrete TS type
+/**
+ * Maps an object of JsonSchema properties to a concrete TypeScript type.
+ *
+ * Converts a record of JsonSchema properties into a TypeScript type where each
+ * property has the inferred type from its corresponding schema.
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * const properties = {
+ *   name: string(),
+ *   age: number(),
+ *   email: string().format("email")
+ * };
+ *
+ * type Shape = PropsToShape<typeof properties>;
+ * // Result: { name: string; age: number; email: string }
+ * ```
+ *
+ * @typeParam P - Record of property names to JsonSchema instances
+ *
+ * @public
+ */
 export type PropsToShape<P extends Record<string, JsonSchema<any>>> = {
   [K in keyof P]: Infer<P[K]>;
 };
 
-// Map common constructors to their primitive/instance types for inference of from(Ctor)
+/**
+ * Maps common JavaScript constructors to their corresponding TypeScript types.
+ *
+ * This utility type converts constructor functions (String, Number, Date, etc.) into
+ * their corresponding runtime types, enabling better type inference when creating
+ * schemas programmatically.
+ *
+ * ### Type Mappings
+ *
+ * - `StringConstructor` → `string`
+ * - `NumberConstructor` → `number`
+ * - `BooleanConstructor` → `boolean`
+ * - `DateConstructor` → `Date`
+ * - `ArrayConstructor` → `any[]`
+ * - `MapConstructor` → `Record<string, any>`
+ * - `SetConstructor` → `Set<any>`
+ * - `ObjectConstructor` → `Record<string, any>`
+ * - Custom classes → `InstanceType<C>`
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * type StringType = CtorToType<StringConstructor>;  // string
+ * type DateType = CtorToType<DateConstructor>;      // Date
+ * type CustomType = CtorToType<typeof MyClass>;     // MyClass
+ * ```
+ *
+ * @typeParam C - The constructor function to map
+ *
+ * @public
+ */
 export type CtorToType<C> = C extends StringConstructor
   ? string
   : C extends NumberConstructor
@@ -29,5 +97,23 @@ export type CtorToType<C> = C extends StringConstructor
                   ? InstanceType<C>
                   : any;
 
-// Utility: convert a union U to an intersection
+/**
+ * Converts a union type to an intersection type.
+ *
+ * This advanced TypeScript utility transforms a union of types (A | B | C) into
+ * an intersection of types (A & B & C), which is useful for schema composition
+ * and merging operations.
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * type Union = { a: string } | { b: number };
+ * type Intersection = UnionToIntersection<Union>;
+ * // Result: { a: string } & { b: number }
+ * ```
+ *
+ * @typeParam U - The union type to convert
+ *
+ * @public
+ */
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
