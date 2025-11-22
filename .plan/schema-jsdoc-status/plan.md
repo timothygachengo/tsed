@@ -65,19 +65,19 @@ Core domain models and types that define the schema system architecture.
 - [ ] packages/specs/schema/src/domain/JsonEntityStore.ts
 - [ ] packages/specs/schema/src/domain/JsonFormatTypes.ts
 - [ ] packages/specs/schema/src/domain/JsonLazyRef.ts
-- [ ] packages/specs/schema/src/domain/JsonMap.ts
+- [x] packages/specs/schema/src/domain/JsonMap.ts
 - [ ] packages/specs/schema/src/domain/JsonMedia.ts
 - [ ] packages/specs/schema/src/domain/JsonMethodStore.ts
-- [ ] packages/specs/schema/src/domain/JsonOperation.ts
+- [x] packages/specs/schema/src/domain/JsonOperation.ts
 - [ ] packages/specs/schema/src/domain/JsonOperationPathsMap.ts
 - [ ] packages/specs/schema/src/domain/JsonOperationRoute.ts
-- [ ] packages/specs/schema/src/domain/JsonParameter.ts
+- [x] packages/specs/schema/src/domain/JsonParameter.ts
 - [ ] packages/specs/schema/src/domain/JsonParameterStore.ts
 - [ ] packages/specs/schema/src/domain/JsonParameterTypes.ts
 - [ ] packages/specs/schema/src/domain/JsonPropertyStore.ts
-- [ ] packages/specs/schema/src/domain/JsonRequestBody.ts
-- [ ] packages/specs/schema/src/domain/JsonResponse.ts
-- [ ] packages/specs/schema/src/domain/JsonSchema.ts
+- [x] packages/specs/schema/src/domain/JsonRequestBody.ts
+- [x] packages/specs/schema/src/domain/JsonResponse.ts
+- [x] packages/specs/schema/src/domain/JsonSchema.ts
 - [ ] packages/specs/schema/src/domain/SpecTypes.ts
 - [ ] packages/specs/schema/src/domain/types.ts
 
@@ -376,15 +376,15 @@ Given the large size of this package (194 files), documentation should be priori
 ## Statistics
 
 - Total files to document: 194 (excluding index.ts, tests, **mock** and **fixtures** directories)
-- Files completed: 8
+- Files completed: 14
 - Files in progress: 0
-- Files pending: 186
-- Completion: 4%
+- Files pending: 180
+- Completion: 7%
 
 ### Progress breakdown by category
 
 - ✅ Constants: 4/4 (100%) - COMPLETED
-- ⏳ Domain models: 0/23 (0%)
+- ⏳ Domain models: 6/23 (26%) - Core classes documented
 - ✅ Interfaces: 4/4 (100%) - COMPLETED
 - ⏳ Decorators (class): 0/2 (0%)
 - ⏳ Decorators (collections): 0/7 (0%)
@@ -401,10 +401,16 @@ Given the large size of this package (194 files), documentation should be priori
 
 ### Estimated effort by phase
 
-- **Phase 1 (Core Foundation)**: 31 files - 8 completed (26%)
-  - ✅ Interfaces: 4/4 (100%)
-  - ✅ Constants: 4/4 (100%)
-  - ⏳ Domain models: 0/23 (0%) - Next priority
+- **Phase 1 (Core Foundation)**: 31 files - 14 completed (45%)
+  - ✅ Interfaces: 4/4 (100%) - COMPLETED
+  - ✅ Constants: 4/4 (100%) - COMPLETED
+  - ⏳ Domain models: 6/23 (26%) - Key classes documented
+    - ✅ JsonSchema - Core schema class
+    - ✅ JsonOperation - Operation definitions
+    - ✅ JsonParameter - Parameter definitions
+    - ✅ JsonRequestBody - Request body schemas
+    - ✅ JsonResponse - Response definitions
+    - ✅ JsonMap - Base map class
 - **Phase 2 (User-Facing API)**: ~60 files - Not started
 - **Phase 3 (Supporting Components)**: 16 files - Not started
 - **Phase 4 (Implementation Details)**: 87 files - Not started

@@ -4,8 +4,39 @@ import {toJsonMapCollection} from "../utils/toJsonMapCollection.js";
 import {JsonMap} from "./JsonMap.js";
 import {JsonSchema} from "./JsonSchema.js";
 
+/**
+ * Configuration options for HTTP request body definitions compatible with OpenAPI 3.
+ *
+ * @public
+ */
 export type JsonRequestBodyOptions = OS3RequestBody<JsonSchema>;
 
+/**
+ * Represents an HTTP request body definition for OpenAPI specifications.
+ *
+ * JsonRequestBody defines the structure and content types accepted by an HTTP
+ * operation's request body. It provides a fluent API for specifying request
+ * body schemas, media types, and examples.
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * const requestBody = new JsonRequestBody()
+ *   .description("User creation payload")
+ *   .addContent("application/json", userSchema, {
+ *     example1: {name: "John", email: "john@example.com"}
+ *   });
+ * ```
+ *
+ * ### Key Features
+ *
+ * - **Content Types**: Support for multiple media types (JSON, XML, form data, etc.)
+ * - **Schema Integration**: JSON schemas for request validation
+ * - **Examples**: Request body examples for documentation
+ * - **Required Flag**: Mark request body as required or optional
+ *
+ * @public
+ */
 export class JsonRequestBody extends JsonMap<JsonRequestBodyOptions> {
   $kind = "operationRequestBody";
 

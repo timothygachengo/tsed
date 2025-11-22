@@ -8,6 +8,15 @@ import {JsonParameter} from "./JsonParameter.js";
 import {JsonResponse} from "./JsonResponse.js";
 import {JsonSchema} from "./JsonSchema.js";
 
+/**
+ * Represents an HTTP operation path with metadata for OpenAPI specifications.
+ *
+ * This class associates an HTTP method and path with operation-level metadata
+ * such as summary and description. It's used internally to manage routing
+ * information for API endpoints.
+ *
+ * @public
+ */
 export class JsonMethodPath extends JsonMap<any> {
   constructor(
     public method: string,
@@ -29,11 +38,53 @@ export class JsonMethodPath extends JsonMap<any> {
   }
 }
 
+/**
+ * Configuration options for JSON operations compatible with OpenAPI 3 specifications.
+ *
+ * Extends the OpenAPI 3 operation specification with Ts.ED-specific media type
+ * declarations (consumes/produces) for request and response handling.
+ *
+ * @public
+ */
 export interface JsonOperationOptions extends OS3Operation<JsonSchema, JsonParameter, JsonMap<JsonResponse>> {
   consumes: string[];
   produces: string[];
 }
 
+/**
+ * Represents an HTTP operation (endpoint) with complete OpenAPI metadata.
+ *
+ * JsonOperation is the core class for defining HTTP endpoints in Ts.ED, storing all
+ * operation-level information required for OpenAPI specification generation including:
+ *
+ * - Request parameters (path, query, header, body)
+ * - Response definitions with status codes
+ * - Security requirements
+ * - Tags and categorization
+ * - Media type handling (consumes/produces)
+ * - Operation metadata (summary, description, operationId)
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * const operation = new JsonOperation()
+ *   .summary("Create a user")
+ *   .description("Creates a new user in the system")
+ *   .addTags([{name: "Users"}])
+ *   .addParameter(0, parameterMetadata)
+ *   .addResponse(201, responseMetadata);
+ * ```
+ *
+ * ### Key Features
+ *
+ * - **Parameters**: Manage operation parameters by index or name
+ * - **Responses**: Define responses for different HTTP status codes
+ * - **Security**: Configure authentication and authorization
+ * - **Media Types**: Specify accepted and produced content types
+ * - **Routing**: Multiple path/method combinations per operation
+ *
+ * @public
+ */
 export class JsonOperation extends JsonMap<JsonOperationOptions> {
   $kind: string = "operation";
 

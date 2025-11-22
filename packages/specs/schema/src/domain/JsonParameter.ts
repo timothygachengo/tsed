@@ -7,6 +7,41 @@ import {JsonMap} from "./JsonMap.js";
 import {formatParameterType} from "./JsonParameterTypes.js";
 import {JsonSchema} from "./JsonSchema.js";
 
+/**
+ * Represents an HTTP operation parameter for OpenAPI specifications.
+ *
+ * JsonParameter defines a single parameter for an HTTP operation, supporting
+ * various parameter locations (path, query, header, body, files) and providing
+ * a fluent API for building parameter metadata compatible with OpenAPI 3.
+ *
+ * ### Parameter Types
+ *
+ * - **path**: Parameter in the URL path (e.g., `/users/{id}`)
+ * - **query**: Query string parameter (e.g., `?page=1`)
+ * - **header**: HTTP header parameter
+ * - **body**: Request body parameter
+ * - **files**: File upload parameter
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * const param = new JsonParameter()
+ *   .name("userId")
+ *   .in("path")
+ *   .required(true)
+ *   .description("The user identifier")
+ *   .schema(JsonSchema.from(String));
+ * ```
+ *
+ * ### Key Features
+ *
+ * - **Schema Integration**: Associated JSON schema for validation
+ * - **Examples**: Support for parameter examples
+ * - **Expression**: Custom parameter expressions for complex bindings
+ * - **Validation**: Required/optional flags and schema constraints
+ *
+ * @public
+ */
 export class JsonParameter extends JsonMap<OS3Parameter<JsonSchema>> {
   $kind = "operationInParameter";
   expression: string;

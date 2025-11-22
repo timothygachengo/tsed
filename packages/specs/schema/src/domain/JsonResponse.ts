@@ -7,8 +7,42 @@ import {JsonMap} from "./JsonMap.js";
 import {JsonMedia} from "./JsonMedia.js";
 import {JsonSchema} from "./JsonSchema.js";
 
+/**
+ * Configuration options for HTTP response definitions compatible with OpenAPI 3.
+ *
+ * @public
+ */
 export type JsonResponseOptions = OS3Response<JsonSchema, string | JsonHeader>;
 
+/**
+ * Represents an HTTP response definition for OpenAPI specifications.
+ *
+ * JsonResponse defines the structure of an HTTP response including status code,
+ * description, headers, and content types. It provides a fluent API for building
+ * response metadata compatible with OpenAPI 3 specifications.
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * const response = new JsonResponse()
+ *   .description("User created successfully")
+ *   .headers({"X-Rate-Limit": "100"})
+ *   .content({
+ *     "application/json": {
+ *       schema: userSchema
+ *     }
+ *   });
+ * ```
+ *
+ * ### Key Features
+ *
+ * - **Status Codes**: Associated HTTP status code
+ * - **Headers**: Response header definitions
+ * - **Content Types**: Multiple media type support
+ * - **Schema Integration**: JSON schemas for response bodies
+ *
+ * @public
+ */
 export class JsonResponse extends JsonMap<JsonResponseOptions> {
   $kind: string = "operationResponse";
 

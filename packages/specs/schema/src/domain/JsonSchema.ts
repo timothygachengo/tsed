@@ -34,6 +34,15 @@ import {JsonFormatTypes} from "./JsonFormatTypes.js";
 import {JsonLazyRef} from "./JsonLazyRef.js";
 import type {Infer, PropsToShape, UnionToIntersection} from "./types.js";
 
+/**
+ * Extended JSON Schema object supporting TypeScript types and Ts.ED enhancements.
+ *
+ * This interface extends the standard JSON Schema 7 specification with additional
+ * type flexibility, allowing TypeScript classes and types to be used directly
+ * in schema definitions.
+ *
+ * @public
+ */
 export interface JsonSchemaObject extends Omit<JSONSchema7, "type" | "additionalProperties" | "items" | "pattern"> {
   type?: JSONSchema7["type"] | Type | null | (String | null | Date | Number | Object | Boolean)[];
   additionalProperties?: JsonSchemaObject | boolean | Type | JsonSchema;
@@ -41,6 +50,17 @@ export interface JsonSchemaObject extends Omit<JSONSchema7, "type" | "additional
   pattern?: string | RegExp;
 }
 
+/**
+ * Union type representing any valid JSON schema representation.
+ *
+ * This type accepts various schema formats including standard JSON Schema objects,
+ * Ts.ED JsonSchema instances, lazy references, TypeScript classes, and label objects.
+ * It provides maximum flexibility for schema definition across the framework.
+ *
+ * @typeParam T - The TypeScript type this schema represents
+ *
+ * @public
+ */
 export type AnyJsonSchema<T = any> =
   | JsonSchemaObject
   | JSONSchema7
@@ -55,6 +75,57 @@ function isEnum(type: any) {
   return isObject(type) && !("toJSON" in type);
 }
 
+/**
+ * Core class representing a JSON Schema with TypeScript type integration.
+ *
+ * JsonSchema is the central class in Ts.ED's schema system, providing a Map-based
+ * interface for building and manipulating JSON Schema definitions. It extends the
+ * standard JSON Schema 7 specification with Ts.ED-specific features including:
+ *
+ * - TypeScript class and type integration
+ * - Property aliasing and naming strategies
+ * - Group-based conditional schemas
+ * - Discriminator support for polymorphic types
+ * - Generic type parameter handling
+ * - Schema composition (oneOf, allOf, anyOf)
+ * - Hook-based transformation pipeline
+ * - Vendor extension support
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * // Create a basic schema
+ * const schema = new JsonSchema({
+ *   type: "string",
+ *   minLength: 1,
+ *   maxLength: 100
+ * });
+ *
+ * // Create schema from TypeScript class
+ * class User {
+ *   name: string;
+ *   email: string;
+ * }
+ *
+ * const userSchema = JsonSchema.from(User);
+ *
+ * // Generate JSON Schema output
+ * const jsonSchema = userSchema.toJSON();
+ * ```
+ *
+ * ### Key Features
+ *
+ * - **Type Safety**: Generic type parameter `T` represents the TypeScript type
+ * - **Composition**: Support for allOf, oneOf, anyOf schema composition
+ * - **Validation**: Full JSON Schema validation keyword support
+ * - **Transformation**: Hook system for custom schema transformations
+ * - **Groups**: Conditional property inclusion based on groups
+ * - **Generics**: Support for generic type parameters in classes
+ *
+ * @typeParam T - The TypeScript type this schema represents
+ *
+ * @public
+ */
 export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
   readonly $kind: string = "schema";
   readonly $isJsonDocument = true;
@@ -94,36 +165,70 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     }
   }
 
+  /**
+   * Get the alias map for property name aliases.
+   *
+   * The alias map allows bidirectional property name mapping, useful for
+   * serialization/deserialization with different naming conventions.
+   *
+   * @returns The alias map containing property-to-alias and alias-to-property mappings
+   */
   get alias() {
     return this.#alias;
   }
 
+  /**
+   * Check if this schema represents a TypeScript class (not a primitive or collection).
+   *
+   * @returns `true` if the schema represents a class, `false` otherwise
+   */
   get isClass() {
     return isClass(this.class) && !this.isCollection;
   }
 
   /**
-   * The current schema is a collection
+   * Check if this schema represents a collection (array, Set, Map, etc.).
+   *
+   * Collections have an associated item schema that defines the type of elements
+   * they contain.
+   *
+   * @returns `true` if the schema is a collection, `false` otherwise
    */
   get isCollection() {
     return this.#isCollection;
   }
 
   /**
-   * The current schema is a reference to another schema
-   * to link property/param to a class schema (if the reference exists).
+   * Check if this is a local schema reference.
+   *
+   * A local schema acts as a reference to link a property or parameter to a class schema.
+   * This is used for type resolution and avoids schema duplication.
+   *
+   * @returns `true` if this is a local schema reference, `false` otherwise
    */
   get isLocalSchema() {
     return this.#isLocalSchema;
   }
 
   /**
-   * Current schema is a generic
+   * Check if this schema represents a generic type.
+   *
+   * Generic schemas have a generic label vendor key and are used for parameterized types.
+   *
+   * @returns `true` if the schema is a generic type, `false` otherwise
    */
   get isGeneric() {
     return this.has(VendorKeys.GENERIC_LABEL);
   }
 
+  /**
+   * Get the ancestor schema that defines a discriminator.
+   *
+   * Searches through the class hierarchy to find a parent class with a discriminator
+   * configuration. This is used for polymorphic type resolution.
+   *
+   * @returns The ancestor schema with discriminator, or undefined if none found
+   */
   get discriminatorAncestor() {
     const ancestors = ancestorsOf(this.#target);
     const ancestor = ancestors.find((ancestor) => JsonEntityStore.from(ancestor).schema.isDiscriminator);
@@ -131,9 +236,12 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
   }
 
   /**
-   * Return the itemSchema computed type.
-   * If the type is a function used for a recursive model,
-   * the function will be called to get the right type.
+   * Get the computed TypeScript class or type for this schema.
+   *
+   * For local schemas, returns the item schema's target.
+   * For recursive models using functions, resolves the function to get the actual type.
+   *
+   * @returns The TypeScript class or type this schema represents
    */
   get class() {
     if (this.#isLocalSchema) {
@@ -144,32 +252,100 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
   }
 
   /**
-   * Return the itemSchema computed type.
+   * Get the TypeScript class for collection items.
+   *
+   * For collection schemas, returns the type of elements in the collection.
+   * For non-collection schemas, returns the schema's own class.
+   *
+   * @returns The item class for collections, or the schema's class otherwise
    */
   get collectionClass() {
     return this.isCollection && this.#itemSchema ? this.#itemSchema.class : this.class;
   }
 
+  /**
+   * Check if this schema can use a $ref reference.
+   *
+   * Schemas with labels can be referenced by $ref to avoid duplication
+   * in generated OpenAPI specifications.
+   *
+   * @returns `true` if the schema can be referenced via $ref, `false` otherwise
+   */
   get canRef(): boolean {
     return this.#useRefLabel;
   }
 
+  /**
+   * Check if this schema allows null values.
+   *
+   * @returns `true` if the schema is nullable, `false` otherwise
+   */
   get isNullable(): boolean {
     return !!this.get<Boolean>(VendorKeys.NULLABLE);
   }
 
+  /**
+   * Check if this property is read-only.
+   *
+   * Read-only properties are included in responses but not accepted in requests.
+   *
+   * @returns `true` if the property is read-only, `false` otherwise
+   */
   get isReadOnly() {
     return this.get("readOnly");
   }
 
+  /**
+   * Check if this property is write-only.
+   *
+   * Write-only properties are accepted in requests but not included in responses.
+   * Useful for sensitive data like passwords.
+   *
+   * @returns `true` if the property is write-only, `false` otherwise
+   */
   get isWriteOnly() {
     return this.get("writeOnly");
   }
 
+  /**
+   * Check if this schema has a discriminator configuration.
+   *
+   * Discriminators enable polymorphic type resolution based on a property value.
+   *
+   * @returns `true` if a discriminator is configured, `false` otherwise
+   */
   get hasDiscriminator() {
     return !!this.#discriminator;
   }
 
+  /**
+   * Create a JsonSchema from various input types.
+   *
+   * This factory method intelligently converts different input types into JsonSchema instances:
+   * - Existing JsonSchema: returned as-is
+   * - TypeScript classes: retrieves the schema from JsonEntityStore
+   * - Primitive classes (String, Number, etc.) and Date: creates type schema
+   * - Plain objects: creates schema from JSON Schema definition
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * // From a class
+   * const schema1 = JsonSchema.from(User);
+   *
+   * // From a primitive
+   * const schema2 = JsonSchema.from(String);
+   *
+   * // From a schema object
+   * const schema3 = JsonSchema.from({type: "string", minLength: 1});
+   *
+   * // From existing schema (no-op)
+   * const schema4 = JsonSchema.from(schema1);
+   * ```
+   *
+   * @param item - The input to convert to a JsonSchema
+   * @returns A JsonSchema instance representing the input
+   */
   static from(item: Partial<JsonSchemaObject> | Type<any> | JsonSchema | undefined) {
     if (item instanceof JsonSchema) {
       return item;
@@ -187,8 +363,15 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
   }
 
   /**
-   * Check if the schema as key, #key or x-key
-   * @param key
+   * Check if the schema has a property.
+   *
+   * Checks multiple locations in order:
+   * 1. Standard Map keys
+   * 2. Internal keys (prefixed with #)
+   * 3. Vendor extension keys
+   *
+   * @param key - The property key to check
+   * @returns `true` if the property exists, `false` otherwise
    */
   has(key: string) {
     if (super.has(key)) {
@@ -203,9 +386,24 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
   }
 
   /**
-   * Get the value of the schema by key, #key or x-key.
-   * @param key
-   * @param defaultValue
+   * Get a property value from the schema.
+   *
+   * Retrieves values from multiple locations in order:
+   * 1. Vendor extension keys
+   * 2. Standard Map keys
+   * 3. Internal keys (prefixed with #)
+   * 4. Default value if not found
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * const minLength = schema.get("minLength", 0);
+   * const customKey = schema.get("x-custom");
+   * ```
+   *
+   * @param key - The property key to retrieve
+   * @param defaultValue - Optional default value if key not found
+   * @returns The property value or default value
    */
   get<T = any>(key: string, defaultValue: T): T;
 
@@ -227,11 +425,36 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return defaultValue;
   }
 
+  /**
+   * Enable group forwarding to nested properties.
+   *
+   * When enabled, groups specified at the parent level are forwarded to nested
+   * object properties, allowing hierarchical group filtering.
+   *
+   * @param bool - Whether to enable group forwarding (default: true)
+   * @returns This schema instance for method chaining
+   */
   forwardGroups(bool: boolean = true) {
     this.vendorKey(VendorKeys.FORWARD_GROUPS, bool);
     return this;
   }
 
+  /**
+   * Assign groups to this property or schema.
+   *
+   * Groups enable conditional inclusion of properties based on serialization context.
+   * For example, you might have "admin" and "public" groups to control visibility.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * schema.groups(["admin", "internal"]);
+   * ```
+   *
+   * @param groups - Array of group names this property belongs to
+   * @param isProperty - Whether this is a property schema (enables group matching hooks)
+   * @returns This schema instance for method chaining
+   */
   groups(groups?: string[], isProperty?: boolean) {
     if (groups) {
       this.vendorKey(VendorKeys.GROUPS, groups);
@@ -253,33 +476,79 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this;
   }
 
+  /**
+   * Set a custom name suffix for group-specific schema variations.
+   *
+   * This is used to generate unique schema names when the same model is used
+   * with different groups, avoiding conflicts in OpenAPI components.
+   *
+   * @param groupsName - The groups name suffix
+   * @returns This schema instance for method chaining
+   */
   groupsName(groupsName?: string) {
     groupsName && this.vendorKey(VendorKeys.GROUPS_NAME, groupsName);
     return this;
   }
 
+  /**
+   * Specify which groups are allowed access to this schema.
+   *
+   * @param groups - Array of group names allowed to access this schema
+   * @returns This schema instance for method chaining
+   */
   allowedGroups(groups?: string[]) {
     groups && this.vendorKey(VendorKeys.ALLOWED_GROUPS, groups);
     return this;
   }
 
   /**
-   * Assign the Generic Labels used over a class or a schema.
-   * @param genericLabels
+   * Assign generic type parameter labels to a class or schema.
+   *
+   * Used for classes with generic type parameters (e.g., `Paginated<T>`)
+   * to track the parameter names for proper schema generation.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * schema.genericLabels(["T", "U"]);
+   * ```
+   *
+   * @param genericLabels - Array of generic type parameter names
+   * @returns This schema instance for method chaining
    */
   genericLabels(genericLabels: string[]) {
     this.vendorKey(VendorKeys.GENERIC_LABELS, genericLabels);
     return this;
   }
 
+  /**
+   * Assign a single generic type label to this schema.
+   *
+   * Marks this schema as representing a generic type parameter.
+   *
+   * @param genericLabel - The generic type parameter name
+   * @returns This schema instance for method chaining
+   */
   genericLabel(genericLabel: string) {
     this.vendorKey(VendorKeys.GENERIC_LABEL, genericLabel);
     return this;
   }
 
   /**
-   * Assign the types of the generics that must be used for the property
-   * @param generics
+   * Specify the concrete types for generic parameters.
+   *
+   * When using a generic class, this method assigns the actual types that should
+   * replace the generic parameters for this specific instance.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * // For Paginated<User>
+   * schema.genericOf([User]);
+   * ```
+   *
+   * @param generics - Arrays of generic type values to apply
+   * @returns This schema instance for method chaining
    */
   genericOf(...generics: GenericValue[][]) {
     const mapped = this.mapGenerics(this.#itemSchema || this.mapToJsonSchema(this.getTarget()), generics);
@@ -289,6 +558,25 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this;
   }
 
+  /**
+   * Mark this schema as nullable or non-nullable.
+   *
+   * Nullable schemas can accept `null` values in addition to their base type.
+   * The type parameter is updated to reflect the nullability.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * // Make nullable
+   * schema.nullable(); // or schema.nullable(true)
+   *
+   * // Make non-nullable
+   * schema.nullable(false);
+   * ```
+   *
+   * @param value - Whether the schema is nullable (default: true)
+   * @returns This schema instance with updated type
+   */
   nullable(): JsonSchema<T | null>;
   nullable(value: true): JsonSchema<T | null>;
   nullable(value: false): JsonSchema<Exclude<T, null>>;
@@ -300,6 +588,27 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this;
   }
 
+  /**
+   * Get or create the item schema for collections.
+   *
+   * For array/collection types, this defines the schema for individual items.
+   * If the schema already has an item schema, it returns the existing one;
+   * otherwise, it creates a new one from the provided definition.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * // Define array items
+   * const arraySchema = new JsonSchema({type: "array"});
+   * arraySchema.itemSchema({type: "string", minLength: 1});
+   *
+   * // For class-based items
+   * arraySchema.itemSchema(User);
+   * ```
+   *
+   * @param obj - Schema definition for items
+   * @returns The item schema instance
+   */
   itemSchema(obj: AnyJsonSchema = {}) {
     this.#itemSchema = this.#itemSchema || this.mapToJsonSchema(obj);
 
@@ -314,10 +623,33 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this.#itemSchema;
   }
 
+  /**
+   * Get the alias for a property name.
+   *
+   * @param property - The property name to look up
+   * @returns The alias for the property, or undefined if none exists
+   */
   getAliasOf(property: AliasType) {
     return this.#alias.get(property as any);
   }
 
+  /**
+   * Add a bidirectional alias mapping between property names.
+   *
+   * Aliases allow properties to be accessed by alternative names, useful for
+   * supporting different naming conventions (camelCase vs snake_case, etc.).
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * schema.addAlias("userId", "user_id");
+   * // Both "userId" and "user_id" now map to each other
+   * ```
+   *
+   * @param property - The original property name
+   * @param alias - The alias name
+   * @returns This schema instance for method chaining
+   */
   addAlias(property: AliasType, alias: AliasType) {
     this.#alias.set(property, alias);
     this.#alias.set(alias, property);
@@ -325,6 +657,12 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this;
   }
 
+  /**
+   * Remove an alias mapping for a property.
+   *
+   * @param property - The property name to remove aliases for
+   * @returns This schema instance for method chaining
+   */
   removeAlias(property: AliasType) {
     const alias = this.#alias.get(property);
     alias && this.#alias.delete(alias);
@@ -333,18 +671,42 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this;
   }
 
+  /**
+   * Set the `$id` keyword for this schema.
+   *
+   * The `$id` keyword is used to identify the schema and establish a base URI
+   * for resolving relative references.
+   *
+   * @param $id - The schema identifier URI
+   * @returns This schema instance for method chaining
+   */
   $id($id: string) {
     super.set("$id", $id);
 
     return this;
   }
 
+  /**
+   * Set a `$ref` reference to another schema.
+   *
+   * The `$ref` keyword creates a reference to a schema defined elsewhere,
+   * enabling schema reuse and avoiding duplication.
+   *
+   * @param $ref - The reference URI (e.g., "#/components/schemas/User")
+   * @returns This schema instance for method chaining
+   */
   $ref($ref: string) {
     super.set("$ref", $ref);
 
     return this;
   }
 
+  /**
+   * Set the JSON Schema version.
+   *
+   * @param $schema - The JSON Schema version URI
+   * @returns This schema instance for method chaining
+   */
   $schema($schema: JSONSchema7Version) {
     super.set("$schema", $schema);
 
@@ -352,8 +714,20 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
   }
 
   /**
-   * Create a ref and use name to sharing schema
-   * @param name
+   * Assign a label to enable schema referencing.
+   *
+   * Labeled schemas can be referenced using `$ref` in OpenAPI specifications,
+   * reducing duplication by sharing schema definitions across endpoints.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * schema.label("User");
+   * // Can now be referenced as #/components/schemas/User
+   * ```
+   *
+   * @param name - The label name for the schema
+   * @returns This schema instance for method chaining
    */
   label(name: string) {
     this.#useRefLabel = true;
@@ -363,12 +737,41 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
     return this;
   }
 
+  /**
+   * Set the name of this schema.
+   *
+   * Unlike `label()`, this sets the name without enabling referencing.
+   *
+   * @param name - The schema name
+   * @returns This schema instance for method chaining
+   */
   name(name: string) {
     super.set("name", name);
 
     return this;
   }
 
+  /**
+   * Mark this property as ignored during serialization.
+   *
+   * Ignored properties are excluded from generated schemas and serialization.
+   * Can be a boolean or a callback function for conditional ignoring.
+   *
+   * ### Usage
+   *
+   * ```typescript
+   * // Always ignore
+   * schema.ignore(true);
+   *
+   * // Conditionally ignore based on context
+   * schema.ignore((value, ctx) => {
+   *   return ctx.groups?.includes("public");
+   * });
+   * ```
+   *
+   * @param cb - Boolean flag or callback function to determine if property should be ignored
+   * @returns This schema instance for method chaining
+   */
   ignore(cb: boolean | IgnoreCallback) {
     if (typeof cb !== "boolean") {
       this.$hooks.on("ignore", cb);
