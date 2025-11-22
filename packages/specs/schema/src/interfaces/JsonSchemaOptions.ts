@@ -1,6 +1,32 @@
 import {SpecTypes} from "../domain/SpecTypes.js";
 import type {GenericsMap} from "../utils/generics.js";
 
+/**
+ * Configuration options for JSON schema generation.
+ *
+ * These options control how JSON schemas are generated from TypeScript classes,
+ * including alias mapping, component references, spec type selection, group filtering,
+ * and custom key generation. The options affect both JSON Schema and OpenAPI
+ * specification generation.
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * import {getJsonSchema, JsonSchemaOptions} from "@tsed/schema";
+ *
+ * const options: JsonSchemaOptions = {
+ *   specType: SpecTypes.OPENAPI,
+ *   specVersion: "3.0.3",
+ *   groups: ["public"],
+ *   useAlias: true,
+ *   customKeys: true
+ * };
+ *
+ * const schema = getJsonSchema(MyModel, options);
+ * ```
+ *
+ * @public
+ */
 export interface JsonSchemaOptions {
   /**
    * Map properties with the alias name. By default, false
