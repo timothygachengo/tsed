@@ -1,0 +1,411 @@
+### Ts.ED Schema — JSDoc Coverage Tracker (packages/specs/schema/src)
+
+Generated: 2025-11-22
+
+Purpose
+
+- Track documentation coverage for exported symbols in `packages/specs/schema/src`.
+- Enforce the "symbols only" rule: document only exported symbols (type alias, interface, enum, class, function,
+  exported constant), not their members.
+- Status legend:
+  - [x] Documented (English JSDoc present and conforms to symbols-only)
+  - [~] Partial (basic JSDoc present, needs polish/validation)
+  - [ ] Pending (no/insufficient JSDoc)
+
+How to use
+
+- Update this file as you document symbols. Keep statuses in sync.
+- Prefer adding per-symbol checklists under each file when possible.
+- Validate with `yarn api:build` regularly to catch TSDoc issues.
+
+Rules (symbols only)
+
+- Write JSDoc in English (TSDoc-compatible).
+- Document only the exported symbol itself, not its internal members (no interface properties, no class props/methods,
+  no enum members descriptions here).
+- Allowed/encouraged tags: `@public`, `@since`, `@deprecated`, `@see`, `@typeParam`.
+- **DO NOT use `@example` tag** - the documentation parser does not support it.
+- For examples, use markdown headings (### Example, ### Usage, etc.) within the JSDoc description instead.
+- Do not change runtime behavior. Minimize diffs and follow the existing code style.
+
+- FR: Documenter uniquement les symboles exportés (classes, fonctions, alias de type, interfaces, enums, constantes
+  exportées). Ne pas documenter leurs membres internes : propriétés/méthodes des classes, propriétés des
+  types/interfaces, membres des enums, etc.
+- FR: NE PAS utiliser le tag `@example`. Utiliser des titres markdown (### Exemple, ### Usage) dans la description JSDoc
+  à la place.
+
+Notes
+
+- Index files, tests (`*.spec.ts`), `__mock__` and `__fixtures__` directories are excluded by request.
+- The `@tsed/schema` package provides a comprehensive JSON Schema and OpenAPI specification system.
+- This is a large package with 194 files organized into multiple categories.
+- Initial focus should be on core domain models, interfaces, and high-impact decorators.
+
+---
+
+## Summary table (per category)
+
+Files under `packages/specs/schema/src` (excluding index.ts, tests, **mock** and **fixtures** directories):
+
+### constants (4 files)
+
+- [ ] packages/specs/schema/src/constants/OperationVerbs.ts
+- [ ] packages/specs/schema/src/constants/VendorKeys.ts
+- [ ] packages/specs/schema/src/constants/httpStatusMessages.ts
+- [ ] packages/specs/schema/src/constants/jsonSchemaProperties.ts
+
+### domain (23 files)
+
+Core domain models and types that define the schema system architecture.
+
+- [ ] packages/specs/schema/src/domain/DecoratorContext.ts
+- [ ] packages/specs/schema/src/domain/JsonAliasMap.ts
+- [ ] packages/specs/schema/src/domain/JsonClassStore.ts
+- [ ] packages/specs/schema/src/domain/JsonDiscriminator.ts
+- [ ] packages/specs/schema/src/domain/JsonEntityStore.ts
+- [ ] packages/specs/schema/src/domain/JsonFormatTypes.ts
+- [ ] packages/specs/schema/src/domain/JsonLazyRef.ts
+- [ ] packages/specs/schema/src/domain/JsonMap.ts
+- [ ] packages/specs/schema/src/domain/JsonMedia.ts
+- [ ] packages/specs/schema/src/domain/JsonMethodStore.ts
+- [ ] packages/specs/schema/src/domain/JsonOperation.ts
+- [ ] packages/specs/schema/src/domain/JsonOperationPathsMap.ts
+- [ ] packages/specs/schema/src/domain/JsonOperationRoute.ts
+- [ ] packages/specs/schema/src/domain/JsonParameter.ts
+- [ ] packages/specs/schema/src/domain/JsonParameterStore.ts
+- [ ] packages/specs/schema/src/domain/JsonParameterTypes.ts
+- [ ] packages/specs/schema/src/domain/JsonPropertyStore.ts
+- [ ] packages/specs/schema/src/domain/JsonRequestBody.ts
+- [ ] packages/specs/schema/src/domain/JsonResponse.ts
+- [ ] packages/specs/schema/src/domain/JsonSchema.ts
+- [ ] packages/specs/schema/src/domain/SpecTypes.ts
+- [ ] packages/specs/schema/src/domain/types.ts
+
+### interfaces (4 files)
+
+Core interface definitions for the schema system.
+
+- [ ] packages/specs/schema/src/interfaces/IgnoreCallback.ts
+- [ ] packages/specs/schema/src/interfaces/JsonHookContext.ts
+- [ ] packages/specs/schema/src/interfaces/JsonOpenSpec.ts
+- [ ] packages/specs/schema/src/interfaces/JsonSchemaOptions.ts
+
+### decorators/class (2 files)
+
+Class-level decorators.
+
+- [ ] packages/specs/schema/src/decorators/class/children.ts
+- [ ] packages/specs/schema/src/decorators/class/discriminatorValue.ts
+
+### decorators/collections (7 files)
+
+Decorators for array/collection validation.
+
+- [ ] packages/specs/schema/src/decorators/collections/collectionContains.ts
+- [ ] packages/specs/schema/src/decorators/collections/collectionOf.ts
+- [ ] packages/specs/schema/src/decorators/collections/maxItems.ts
+- [ ] packages/specs/schema/src/decorators/collections/maxProperties.ts
+- [ ] packages/specs/schema/src/decorators/collections/minItems.ts
+- [ ] packages/specs/schema/src/decorators/collections/minProperties.ts
+- [ ] packages/specs/schema/src/decorators/collections/uniqueItems.ts
+
+### decorators/common (46 files)
+
+Common schema decorators for properties and classes.
+
+- [ ] packages/specs/schema/src/decorators/common/additionalProperties.ts
+- [ ] packages/specs/schema/src/decorators/common/allOf.ts
+- [ ] packages/specs/schema/src/decorators/common/allow.ts
+- [ ] packages/specs/schema/src/decorators/common/any.ts
+- [ ] packages/specs/schema/src/decorators/common/anyOf.ts
+- [ ] packages/specs/schema/src/decorators/common/const.ts
+- [ ] packages/specs/schema/src/decorators/common/customKey.ts
+- [ ] packages/specs/schema/src/decorators/common/default.ts
+- [ ] packages/specs/schema/src/decorators/common/defaultMsg.ts
+- [ ] packages/specs/schema/src/decorators/common/description.ts
+- [ ] packages/specs/schema/src/decorators/common/discriminatorKey.ts
+- [ ] packages/specs/schema/src/decorators/common/enum.ts
+- [ ] packages/specs/schema/src/decorators/common/errorMsg.ts
+- [ ] packages/specs/schema/src/decorators/common/example.ts
+- [ ] packages/specs/schema/src/decorators/common/examples.ts
+- [ ] packages/specs/schema/src/decorators/common/exclusiveMaximum.ts
+- [ ] packages/specs/schema/src/decorators/common/exclusiveMinimum.ts
+- [ ] packages/specs/schema/src/decorators/common/format.ts
+- [ ] packages/specs/schema/src/decorators/common/forwardGroups.ts
+- [ ] packages/specs/schema/src/decorators/common/groups.ts
+- [ ] packages/specs/schema/src/decorators/common/hidden.ts
+- [ ] packages/specs/schema/src/decorators/common/ignore.ts
+- [ ] packages/specs/schema/src/decorators/common/integer.ts
+- [ ] packages/specs/schema/src/decorators/common/jsonEntityFn.ts
+- [ ] packages/specs/schema/src/decorators/common/labelledAs.ts
+- [ ] packages/specs/schema/src/decorators/common/maxLength.ts
+- [ ] packages/specs/schema/src/decorators/common/maximum.ts
+- [ ] packages/specs/schema/src/decorators/common/minLength.ts
+- [ ] packages/specs/schema/src/decorators/common/minimum.ts
+- [ ] packages/specs/schema/src/decorators/common/multipleOf.ts
+- [ ] packages/specs/schema/src/decorators/common/name.ts
+- [ ] packages/specs/schema/src/decorators/common/nullable.ts
+- [ ] packages/specs/schema/src/decorators/common/oneOf.ts
+- [ ] packages/specs/schema/src/decorators/common/optional.ts
+- [ ] packages/specs/schema/src/decorators/common/pattern.ts
+- [ ] packages/specs/schema/src/decorators/common/property.ts
+- [ ] packages/specs/schema/src/decorators/common/readOnly.ts
+- [ ] packages/specs/schema/src/decorators/common/recordOf.ts
+- [ ] packages/specs/schema/src/decorators/common/required.ts
+- [ ] packages/specs/schema/src/decorators/common/requiredGroups.ts
+- [ ] packages/specs/schema/src/decorators/common/schema.ts
+- [ ] packages/specs/schema/src/decorators/common/title.ts
+- [ ] packages/specs/schema/src/decorators/common/typeError.ts
+- [ ] packages/specs/schema/src/decorators/common/writeOnly.ts
+
+### decorators/config (1 file)
+
+- [ ] packages/specs/schema/src/decorators/config/jsonEntityComponent.ts
+
+### decorators/generics (2 files)
+
+Decorators for generic type handling.
+
+- [ ] packages/specs/schema/src/decorators/generics/genericOf.ts
+- [ ] packages/specs/schema/src/decorators/generics/generics.ts
+
+### decorators/operations (27 files)
+
+Decorators for HTTP operations and OpenAPI specifications.
+
+- [ ] packages/specs/schema/src/decorators/operations/acceptMime.ts
+- [ ] packages/specs/schema/src/decorators/operations/consumes.ts
+- [ ] packages/specs/schema/src/decorators/operations/contentType.ts
+- [ ] packages/specs/schema/src/decorators/operations/deprecated.ts
+- [ ] packages/specs/schema/src/decorators/operations/header.ts
+- [ ] packages/specs/schema/src/decorators/operations/in.ts
+- [ ] packages/specs/schema/src/decorators/operations/inFile.ts
+- [ ] packages/specs/schema/src/decorators/operations/location.ts
+- [ ] packages/specs/schema/src/decorators/operations/operation.ts
+- [ ] packages/specs/schema/src/decorators/operations/operationId.ts
+- [ ] packages/specs/schema/src/decorators/operations/operationPath.ts
+- [ ] packages/specs/schema/src/decorators/operations/partial.ts
+- [ ] packages/specs/schema/src/decorators/operations/path.ts
+- [ ] packages/specs/schema/src/decorators/operations/produces.ts
+- [ ] packages/specs/schema/src/decorators/operations/publish.ts
+- [ ] packages/specs/schema/src/decorators/operations/redirect.ts
+- [ ] packages/specs/schema/src/decorators/operations/returns.ts
+- [ ] packages/specs/schema/src/decorators/operations/route.ts
+- [ ] packages/specs/schema/src/decorators/operations/security.ts
+- [ ] packages/specs/schema/src/decorators/operations/status.ts
+- [ ] packages/specs/schema/src/decorators/operations/subscribe.ts
+- [ ] packages/specs/schema/src/decorators/operations/summary.ts
+- [ ] packages/specs/schema/src/decorators/operations/tags.ts
+- [ ] packages/specs/schema/src/decorators/operations/view.ts
+
+### fn (17 files)
+
+Functional helpers for schema creation.
+
+- [ ] packages/specs/schema/src/fn/allOf.ts
+- [ ] packages/specs/schema/src/fn/any.ts
+- [ ] packages/specs/schema/src/fn/anyOf.ts
+- [ ] packages/specs/schema/src/fn/boolean.ts
+- [ ] packages/specs/schema/src/fn/collection.ts
+- [ ] packages/specs/schema/src/fn/date.ts
+- [ ] packages/specs/schema/src/fn/email.ts
+- [ ] packages/specs/schema/src/fn/enums.ts
+- [ ] packages/specs/schema/src/fn/from.ts
+- [ ] packages/specs/schema/src/fn/integer.ts
+- [ ] packages/specs/schema/src/fn/lazyRef.ts
+- [ ] packages/specs/schema/src/fn/number.ts
+- [ ] packages/specs/schema/src/fn/object.ts
+- [ ] packages/specs/schema/src/fn/oneOf.ts
+- [ ] packages/specs/schema/src/fn/string.ts
+- [ ] packages/specs/schema/src/fn/uri.ts
+- [ ] packages/specs/schema/src/fn/url.ts
+
+### hooks (3 files)
+
+Hook functions for schema transformation.
+
+- [ ] packages/specs/schema/src/hooks/alterIgnore.ts
+- [ ] packages/specs/schema/src/hooks/alterOneOf.ts
+- [ ] packages/specs/schema/src/hooks/alterRequiredGroups.ts
+
+### registries (2 files)
+
+- [ ] packages/specs/schema/src/registries/JsonSchemaMapperContainer.ts
+- [ ] packages/specs/schema/src/registries/enumRegistries.ts
+
+### components/default (13 files)
+
+Default mappers for schema generation.
+
+- [ ] packages/specs/schema/src/components/default/anyMapper.ts
+- [ ] packages/specs/schema/src/components/default/classMapper.ts
+- [ ] packages/specs/schema/src/components/default/discriminatorMappingMapper.ts
+- [ ] packages/specs/schema/src/components/default/enumsMapper.ts
+- [ ] packages/specs/schema/src/components/default/genericsMapper.ts
+- [ ] packages/specs/schema/src/components/default/inheritedClassMapper.ts
+- [ ] packages/specs/schema/src/components/default/lazyRefMapper.ts
+- [ ] packages/specs/schema/src/components/default/mapMapper.ts
+- [ ] packages/specs/schema/src/components/default/nextMapper.ts
+- [ ] packages/specs/schema/src/components/default/nullableMapper.ts
+- [ ] packages/specs/schema/src/components/default/objectMapper.ts
+- [ ] packages/specs/schema/src/components/default/ofMapper.ts
+- [ ] packages/specs/schema/src/components/default/requiredMapper.ts
+- [ ] packages/specs/schema/src/components/default/schemaMapper.ts
+
+### components/open-spec (14 files)
+
+OpenAPI specification mappers.
+
+- [ ] packages/specs/schema/src/components/open-spec/discriminatorMappingMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/enumsMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/generate.ts
+- [ ] packages/specs/schema/src/components/open-spec/nullableMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationInFilesMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationInParameterMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationInParametersMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationInQueryMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationMediaMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationRequestBodyMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/operationResponseMapper.ts
+- [ ] packages/specs/schema/src/components/open-spec/pathsMapper.ts
+
+### utils (43 files)
+
+Utility functions for schema operations.
+
+- [ ] packages/specs/schema/src/utils/buildPath.ts
+- [ ] packages/specs/schema/src/utils/concatParameters.ts
+- [ ] packages/specs/schema/src/utils/concatPath.ts
+- [ ] packages/specs/schema/src/utils/defineStatusModel.ts
+- [ ] packages/specs/schema/src/utils/generateSpec.ts
+- [ ] packages/specs/schema/src/utils/generics.ts
+- [ ] packages/specs/schema/src/utils/getComputedType.ts
+- [ ] packages/specs/schema/src/utils/getInheritedStores.ts
+- [ ] packages/specs/schema/src/utils/getJsonEntityStore.ts
+- [ ] packages/specs/schema/src/utils/getJsonPathParameters.ts
+- [ ] packages/specs/schema/src/utils/getJsonSchema.ts
+- [ ] packages/specs/schema/src/utils/getJsonType.ts
+- [ ] packages/specs/schema/src/utils/getOperationsRoutes.ts
+- [ ] packages/specs/schema/src/utils/getOperationsStores.ts
+- [ ] packages/specs/schema/src/utils/getPropertiesStores.ts
+- [ ] packages/specs/schema/src/utils/getSpec.ts
+- [ ] packages/specs/schema/src/utils/getSpecType.ts
+- [ ] packages/specs/schema/src/utils/isSuccessStatus.ts
+- [ ] packages/specs/schema/src/utils/mapHeaders.ts
+- [ ] packages/specs/schema/src/utils/mapOpenSpec.ts
+- [ ] packages/specs/schema/src/utils/mapOpenSpec2.ts
+- [ ] packages/specs/schema/src/utils/mapOpenSpec3.ts
+- [ ] packages/specs/schema/src/utils/mapOpenSpecInfo.ts
+- [ ] packages/specs/schema/src/utils/mapOperationOptions.ts
+- [ ] packages/specs/schema/src/utils/matchGroups.ts
+- [ ] packages/specs/schema/src/utils/mergeSchema.ts
+- [ ] packages/specs/schema/src/utils/mergeSpec.ts
+- [ ] packages/specs/schema/src/utils/operationIdFormatter.ts
+- [ ] packages/specs/schema/src/utils/ref.ts
+- [ ] packages/specs/schema/src/utils/removeHiddenOperation.ts
+- [ ] packages/specs/schema/src/utils/serializeEnumValues.ts
+- [ ] packages/specs/schema/src/utils/toJsonMapCollection.ts
+- [ ] packages/specs/schema/src/utils/toJsonRegex.ts
+- [ ] packages/specs/schema/src/utils/transformToOS2.ts
+- [ ] packages/specs/schema/src/utils/withErrorMsg.ts
+
+---
+
+## Execution plan
+
+Given the large size of this package (194 files), documentation should be prioritized as follows:
+
+### Phase 1: Core Foundation (Highest Priority)
+
+1. **Core Interfaces** (`interfaces/*`) - 4 files
+
+   - Define contracts and public APIs
+   - Most referenced by other packages
+
+2. **Domain Models** (`domain/*`) - 23 files
+
+   - Core schema concepts: JsonSchema, JsonOperation, JsonParameter, etc.
+   - Foundation for understanding the schema system
+
+3. **Key Constants** (`constants/*`) - 4 files
+   - Enums and constant definitions used throughout
+
+### Phase 2: User-Facing API (High Priority)
+
+4. **Most Common Decorators** (`decorators/common/*`) - Focus on top 20 most used
+
+   - @Property, @Required, @Optional, @Description, @Example, @Enum
+   - @MinLength, @MaxLength, @Pattern, @Format
+   - @Nullable, @Default, @Schema
+   - User-facing API decorators
+
+5. **Operation Decorators** (`decorators/operations/*`) - Focus on main ones
+
+   - @Returns, @Status, @Route, @Path
+   - @Header, @Summary, @Tags
+   - HTTP operation decorators
+
+6. **Functional Helpers** (`fn/*`) - 17 files
+   - Helper functions for programmatic schema creation
+
+### Phase 3: Supporting Components (Medium Priority)
+
+7. **Collection Decorators** (`decorators/collections/*`) - 7 files
+8. **Class Decorators** (`decorators/class/*`) - 2 files
+9. **Generic Decorators** (`decorators/generics/*`) - 2 files
+10. **Hooks** (`hooks/*`) - 3 files
+11. **Registries** (`registries/*`) - 2 files
+
+### Phase 4: Implementation Details (Lower Priority)
+
+12. **Mapper Components** (`components/default/*` and `components/open-spec/*`) - 27 files
+13. **Utility Functions** (`utils/*`) - 43 files
+
+### Next actions
+
+- [ ] Begin with `interfaces/*` files (4 files)
+- [ ] Document `domain/*` core classes (23 files)
+- [ ] Document `constants/*` files (4 files)
+- [ ] Document most common decorators from `decorators/common/*`
+- [ ] Continue with operation decorators and functional helpers
+- [ ] Validate with `yarn api:build` at regular intervals
+
+---
+
+## Statistics
+
+- Total files to document: 194 (excluding index.ts, tests, **mock** and **fixtures** directories)
+- Files completed: 0
+- Files in progress: 0
+- Files pending: 194
+- Completion: 0%
+
+### Progress breakdown by category
+
+- ⏳ Constants: 0/4 (0%)
+- ⏳ Domain models: 0/23 (0%)
+- ⏳ Interfaces: 0/4 (0%)
+- ⏳ Decorators (class): 0/2 (0%)
+- ⏳ Decorators (collections): 0/7 (0%)
+- ⏳ Decorators (common): 0/46 (0%)
+- ⏳ Decorators (config): 0/1 (0%)
+- ⏳ Decorators (generics): 0/2 (0%)
+- ⏳ Decorators (operations): 0/27 (0%)
+- ⏳ Functions (fn): 0/17 (0%)
+- ⏳ Hooks: 0/3 (0%)
+- ⏳ Registries: 0/2 (0%)
+- ⏳ Components (default): 0/13 (0%)
+- ⏳ Components (open-spec): 0/14 (0%)
+- ⏳ Utils: 0/43 (0%)
+
+### Estimated effort by phase
+
+- **Phase 1 (Core Foundation)**: 31 files - Critical for understanding
+- **Phase 2 (User-Facing API)**: ~60 files - High impact for users
+- **Phase 3 (Supporting Components)**: 16 files - Medium priority
+- **Phase 4 (Implementation Details)**: 87 files - Can be documented incrementally
+
+---
+
+Last updated: 2025-11-22
