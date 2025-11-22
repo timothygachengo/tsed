@@ -1,3 +1,29 @@
+/**
+ * HTTP operation parameter location types.
+ *
+ * This enum defines where parameters can be located in an HTTP request.
+ * These types are used for both JSON Schema and OpenAPI parameter definitions.
+ *
+ * ### Parameter Locations
+ *
+ * - **BODY**: Request body parameter (payload)
+ * - **PATH**: URL path parameter (e.g., `/users/{id}`)
+ * - **QUERY**: URL query string parameter (e.g., `?page=1`)
+ * - **HEADER**: HTTP header parameter (e.g., `Authorization`)
+ * - **COOKIES**: Cookie parameter
+ * - **FILES**: File upload parameter (multipart/form-data)
+ *
+ * ### Usage
+ *
+ * ```typescript
+ * import {JsonParameterTypes} from "@tsed/schema";
+ *
+ * parameter.in(JsonParameterTypes.QUERY);
+ * parameter.in(JsonParameterTypes.PATH);
+ * ```
+ *
+ * @public
+ */
 export enum JsonParameterTypes {
   BODY = "body",
   PATH = "path",
