@@ -101,12 +101,12 @@ Class-level decorators.
 
 Decorators for array/collection validation.
 
-- [ ] packages/specs/schema/src/decorators/collections/collectionContains.ts
+- [x] packages/specs/schema/src/decorators/collections/collectionContains.ts
 - [~] packages/specs/schema/src/decorators/collections/collectionOf.ts (already well documented)
-- [ ] packages/specs/schema/src/decorators/collections/maxItems.ts
-- [ ] packages/specs/schema/src/decorators/collections/maxProperties.ts
-- [ ] packages/specs/schema/src/decorators/collections/minItems.ts
-- [ ] packages/specs/schema/src/decorators/collections/minProperties.ts
+- [x] packages/specs/schema/src/decorators/collections/maxItems.ts
+- [x] packages/specs/schema/src/decorators/collections/maxProperties.ts
+- [x] packages/specs/schema/src/decorators/collections/minItems.ts
+- [x] packages/specs/schema/src/decorators/collections/minProperties.ts
 - [~] packages/specs/schema/src/decorators/collections/uniqueItems.ts (already well documented)
 
 ### decorators/common (46 files)
@@ -119,18 +119,18 @@ Common schema decorators for properties and classes.
 - [x] packages/specs/schema/src/decorators/common/any.ts
 - [x] packages/specs/schema/src/decorators/common/anyOf.ts
 - [x] packages/specs/schema/src/decorators/common/const.ts
-- [ ] packages/specs/schema/src/decorators/common/customKey.ts
+- [x] packages/specs/schema/src/decorators/common/customKey.ts
 - [x] packages/specs/schema/src/decorators/common/default.ts
-- [ ] packages/specs/schema/src/decorators/common/defaultMsg.ts
+- [x] packages/specs/schema/src/decorators/common/defaultMsg.ts (uses ErrorMsg)
 - [~] packages/specs/schema/src/decorators/common/description.ts
-- [ ] packages/specs/schema/src/decorators/common/discriminatorKey.ts
+- [x] packages/specs/schema/src/decorators/common/discriminatorKey.ts
 - [~] packages/specs/schema/src/decorators/common/enum.ts
-- [ ] packages/specs/schema/src/decorators/common/errorMsg.ts
-- [ ] packages/specs/schema/src/decorators/common/example.ts
-- [ ] packages/specs/schema/src/decorators/common/examples.ts
-- [ ] packages/specs/schema/src/decorators/common/exclusiveMaximum.ts
-- [ ] packages/specs/schema/src/decorators/common/exclusiveMinimum.ts
-- [ ] packages/specs/schema/src/decorators/common/format.ts
+- [x] packages/specs/schema/src/decorators/common/errorMsg.ts
+- [x] packages/specs/schema/src/decorators/common/example.ts
+- [x] packages/specs/schema/src/decorators/common/examples.ts
+- [~] packages/specs/schema/src/decorators/common/exclusiveMaximum.ts (well documented)
+- [~] packages/specs/schema/src/decorators/common/exclusiveMinimum.ts (well documented)
+- [x] packages/specs/schema/src/decorators/common/format.ts
 - [ ] packages/specs/schema/src/decorators/common/forwardGroups.ts
 - [ ] packages/specs/schema/src/decorators/common/groups.ts
 - [ ] packages/specs/schema/src/decorators/common/hidden.ts
@@ -376,15 +376,15 @@ Given the large size of this package (194 files), documentation should be priori
 ## Statistics
 
 - Total files to document: 194 (excluding index.ts, tests, **mock** and **fixtures** directories)
-- **Files completed**: 45 (23%)
-- **Files with improved docs**: 13 (7%)
-- Files pending: 136
-- **Total Progress**: 30% documentation coverage
+- **Files completed**: 58 (30%)
+- **Files with improved docs**: 17 (9%)
+- Files pending: 119
+- **Total Progress**: 39% documentation coverage
 
 ### Progress breakdown by category
 
 - ✅ **Constants**: 4/4 (100%) - COMPLETED
-- ✅ **Domain models**: 23/23 (100%) - COMPLETED ⭐
+- ✅ **Domain models**: 23/23 (100%) - ALL COMPLETED ⭐
   - ✅ JsonSchema (+ **30+ methods documented**)
   - ✅ JsonOperation, JsonParameter, JsonRequestBody, JsonResponse
   - ✅ JsonMap, JsonMedia, JsonLazyRef, JsonDiscriminator
@@ -392,9 +392,10 @@ Given the large size of this package (194 files), documentation should be priori
   - ✅ SpecTypes, JsonFormatTypes, JsonParameterTypes (enums)
 - ✅ **Interfaces**: 4/4 (100%) - COMPLETED
 - ⏳ Decorators (class): 0/2 (0%)
-- ⏳ **Decorators (collections)**: 2 already good (29%)
-  - [~] @CollectionOf, @UniqueItems (already well documented)
-- ⏳ **Decorators (common)**: 2 fully + 6 already good (17%)
+- ✅ **Decorators (collections)**: 7/7 (100%) - COMPLETED ⭐
+  - ✅ @CollectionContains, @MaxItems, @MinItems, @MaxProperties, @MinProperties
+  - [~] @CollectionOf, @UniqueItems (pre-existing good docs)
+- ⏳ **Decorators (common)**: 14 fully + 6 already good (43%)
   - ✅ @Property, @Required (comprehensive)
   - [~] @Description, @Enum, @MinLength, @MaxLength, @Pattern (already good)
 - ⏳ Decorators (config): 0/1 (0%)
@@ -439,9 +440,16 @@ Given the large size of this package (194 files), documentation should be priori
     - ✅ JsonParameterTypes - Parameter location types enum
     - [~] DecoratorContext, JsonAliasMap - Marked @ignore (internal implementation)
 
-- **Phase 2 (User-Facing API)**: ~60 files - 30 documented/improved (50%)
+- **Phase 2 (User-Facing API)**: ~60 files - 43 documented/improved (72%)
 
-  - ⏳ Common decorators: 14 fully + 6 already well documented (43%)
+  - ⏳ Common decorators: 22 fully + 8 already well documented (65%)
+  - ✅ **Collection decorators**: 7/7 (100%) - COMPLETED ⭐
+    - ✅ @CollectionContains - At least one matching element
+    - ✅ @MaxItems - Maximum array length
+    - ✅ @MinItems - Minimum array length
+    - ✅ @MaxProperties - Maximum object properties
+    - ✅ @MinProperties - Minimum object properties
+    - [~] @CollectionOf, @UniqueItems - Pre-existing good docs
     - ✅ @Property - Comprehensive with examples
     - ✅ @Required - Comprehensive with use cases
     - ✅ @AdditionalProperties - Comprehensive with boolean and schema usage
