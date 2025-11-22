@@ -94,8 +94,8 @@ Core interface definitions for the schema system.
 
 Class-level decorators.
 
-- [ ] packages/specs/schema/src/decorators/class/children.ts
-- [ ] packages/specs/schema/src/decorators/class/discriminatorValue.ts
+- [x] packages/specs/schema/src/decorators/class/children.ts
+- [x] packages/specs/schema/src/decorators/class/discriminatorValue.ts
 
 ### decorators/collections (7 files)
 
@@ -166,7 +166,7 @@ Common schema decorators for properties and classes.
 
 Decorators for generic type handling.
 
-- [ ] packages/specs/schema/src/decorators/generics/genericOf.ts
+- [~] packages/specs/schema/src/decorators/generics/genericOf.ts (already well documented)
 - [ ] packages/specs/schema/src/decorators/generics/generics.ts
 
 ### decorators/operations (27 files)
@@ -376,10 +376,10 @@ Given the large size of this package (194 files), documentation should be priori
 ## Statistics
 
 - Total files to document: 194 (excluding index.ts, tests, **mock** and **fixtures** directories)
-- **Files completed**: 58 (30%)
-- **Files with improved docs**: 17 (9%)
-- Files pending: 119
-- **Total Progress**: 39% documentation coverage
+- **Files completed**: 60 (31%)
+- **Files with improved docs**: 18 (9%)
+- Files pending: 116
+- **Total Progress**: 40% documentation coverage
 
 ### Progress breakdown by category
 
@@ -391,11 +391,13 @@ Given the large size of this package (194 files), documentation should be priori
   - ✅ **JsonEntityStore, JsonPropertyStore, JsonMethodStore** (Store system)
   - ✅ SpecTypes, JsonFormatTypes, JsonParameterTypes (enums)
 - ✅ **Interfaces**: 4/4 (100%) - COMPLETED
-- ⏳ Decorators (class): 0/2 (0%)
+- ✅ **Decorators (class)**: 2/2 (100%) - COMPLETED ⭐
+  - ✅ @Children - Controller hierarchy and route composition
+  - ✅ @DiscriminatorValue - Polymorphic subclass values
 - ✅ **Decorators (collections)**: 7/7 (100%) - COMPLETED ⭐
   - ✅ @CollectionContains, @MaxItems, @MinItems, @MaxProperties, @MinProperties
   - [~] @CollectionOf, @UniqueItems (pre-existing good docs)
-- ⏳ **Decorators (common)**: 14 fully + 6 already good (43%)
+- ⏳ **Decorators (common)**: 22 fully + 8 already good (65%)
   - ✅ @Property, @Required (comprehensive)
   - [~] @Description, @Enum, @MinLength, @MaxLength, @Pattern (already good)
 - ⏳ Decorators (config): 0/1 (0%)
@@ -440,9 +442,10 @@ Given the large size of this package (194 files), documentation should be priori
     - ✅ JsonParameterTypes - Parameter location types enum
     - [~] DecoratorContext, JsonAliasMap - Marked @ignore (internal implementation)
 
-- **Phase 2 (User-Facing API)**: ~60 files - 43 documented/improved (72%)
+- **Phase 2 (User-Facing API)**: ~60 files - 45 documented/improved (75%)
 
   - ⏳ Common decorators: 22 fully + 8 already well documented (65%)
+  - ✅ **Class decorators**: 2/2 (100%) - COMPLETED ⭐
   - ✅ **Collection decorators**: 7/7 (100%) - COMPLETED ⭐
     - ✅ @CollectionContains - At least one matching element
     - ✅ @MaxItems - Maximum array length
