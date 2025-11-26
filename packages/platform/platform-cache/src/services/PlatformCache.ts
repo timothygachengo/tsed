@@ -74,7 +74,7 @@ export class PlatformCache {
   }
 
   ttl(key: string) {
-    if (this.cache && "store" in this.cache && this.cache.store.ttl) {
+    if (this.cache && "store" in this.cache && isFunction(this.cache.store.ttl)) {
       return this.cache.store.ttl(key);
     }
 
