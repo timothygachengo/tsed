@@ -369,6 +369,7 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
       enumerable: false,
       configurable: false
     });
+    return this;
   }
 
   /**
