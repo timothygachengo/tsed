@@ -3,6 +3,7 @@
  */
 export * from "./bootstrap/attach-logger.js";
 export * from "./bootstrap/runtime.js";
+export * from "./extends/cache.js";
 export * from "./fn/defineEndpoint.js";
 export * from "./fn/defineHook.js";
 export * from "./fn/defineOperationApi.js";
