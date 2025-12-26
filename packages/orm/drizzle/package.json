@@ -1,0 +1,70 @@
+{
+  "name": "@tsed/drizzle",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ts.ED integration with Drizzle ORM - A lightweight, type-safe ORM for TypeScript",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "barrels": "barrels",
+    "build": "yarn barrels && yarn build:ts"
+  },
+  "keywords": [
+    "tsed",
+    "drizzle",
+    "drizzle-orm",
+    "typescript",
+    "decorators",
+    "orm",
+    "database",
+    "postgresql",
+    "mysql",
+    "sqlite"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@tsed/core": "workspace:*",
+    "@tsed/di": "workspace:*",
+    "@tsed/logger": "^8.0.0"
+  },
+  "devDependencies": {
+    "@tsed/ajv": "workspace:*",
+    "@tsed/barrels": "workspace:*",
+    "@tsed/json-mapper": "workspace:*",
+    "@tsed/schema": "workspace:*",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.1"
+  },
+  "peerDependencies": {
+    "drizzle-orm": ">=0.30.0"
+  },
+  "peerDependenciesMeta": {
+    "drizzle-orm": {
+      "optional": false
+    },
+    "@libsql/client": {
+      "optional": true
+    },
+    "@neondatabase/serverless": {
+      "optional": true
+    },
+    "@planetscale/database": {
+      "optional": true
+    },
+    "better-sqlite3": {
+      "optional": true
+    },
+    "mysql2": {
+      "optional": true
+    },
+    "pg": {
+      "optional": true
+    },
+    "@types/better-sqlite3": {
+      "optional": true
+    },
+    "@types/pg": {
+      "optional": true
+    }
+  }
+}
