@@ -7,3 +7,4 @@ export * from "./interfaces/PlatformFastifySettings.js";
 export * from "./services/PlatformFastifyRequest.js";
 export * from "./services/PlatformFastifyResponse.js";
 export * from "./utils/convertPath.js";
+export * from "./utils/toPrefix.js";
