@@ -1,8 +1,10 @@
 # Custom endpoint decorator
 
-Custom endpoint decorator could be interesting when you want to handle a request and perform actions before or after the endpoint method.
+Custom endpoint decorator could be interesting when you want to handle a request and perform actions before or after the
+endpoint method.
 
-Unlike [Pipes](/docs/pipes.html) that operate on the parameters of a method, the endpoint decorator will operate on the method itself.
+Unlike [Pipes](/docs/pipes.html) that operate on the parameters of a method, the endpoint decorator will operate on the
+method itself.
 
 It's based on the middleware and use one of these decorators to work:
 
@@ -12,7 +14,8 @@ It's based on the middleware and use one of these decorators to work:
 
 ## Built-in
 
-Many other decorators are implemented and can be taken as an example to build your own endpoint decorator. Just follow the links here and click on source link to see source code on Github:
+Many other decorators are implemented and can be taken as an example to build your own endpoint decorator. Just follow
+the links here and click on source link to see source code on Github:
 
 <ApiList query="status.indexOf('operation') > -1 && status.indexOf('decorator') > -1" />
 
@@ -22,23 +25,25 @@ One of the use cases already implemented by Ts.ED is the @@PlatformAcceptMimesMi
 
 <<< @/docs/snippets/middlewares/platform-accept-mimes-middleware.ts
 
-You can see in this example the usage of `endpoint.get` from @@EndpointInfo@@. This method contains all options
+You can see in this example the usage of `endpoint.get` from @@JsonMethodStore@@. This method contains all options
 which can be passed to the decorator associated to PlatformAcceptMimesMiddleware.
 
 <<< @/docs/snippets/middlewares/accept-mime-usage.ts
 
 ::: tip
 This example uses @@AcceptMime@@ decorator with one option, the `application/json`.
-This option will be set to `endpoint.get` seen before with PlatformAcceptMimesMiddleware example and can be retrieved by using
+This option will be set to `endpoint.get` seen before with PlatformAcceptMimesMiddleware example and can be retrieved by
+using
 `endpoint.get(PlatformAcceptMimesMiddleware)`.
 :::
 
-Ts.ED provides API to create your own decorator like @@AcceptMime@@ which registers the options and at least one middleware
+Ts.ED provides API to create your own decorator like @@AcceptMime@@ which registers the options and at least one
+middleware
 with these decorators and utils:
 
 - @@Use@@, @@UseBeforeEach@@, @@UseBefore@@, or @@UseAfter@@ for middleware registration,
 - @@useDecorators@@ if you want to combine different decorators,
-- @@StoreMerge@@ or @@StoreGet@@ to register options.
+- @@StoreMerge@@ or `StoreGet` to register options.
 
 For example, we can take the @@AcceptMime@@ decorator as an example and see how it works. Here is its code:
 

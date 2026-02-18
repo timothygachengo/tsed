@@ -796,7 +796,7 @@ It is also possible to add constraint on additional properties by giving a raw J
 
 :::
 
-Or by using @@getJsonSchema@@ in combination with @@AdditionalProperty@@ as follows:
+Or by using @@getJsonSchema@@ in combination with @@AdditionalProperties@@ as follows:
 
 ::: code-group
 
@@ -1881,7 +1881,9 @@ Here is the list of available functions:
 
 #### Composing object schemas
 
-JsonSchema instances returned by the Functional API expose `.pick()`, `.omit()`, `.partial()`, and `.merge()` helpers to build derived object models without mutating the original schema. Each helper keeps `s.infer()` aligned with the resulting shape.
+JsonSchema instances returned by the Functional API expose `.pick()`, `.omit()`, `.partial()`, and `.merge()` helpers to
+build derived object models without mutating the original schema. Each helper keeps `s.infer()` aligned with the
+resulting shape.
 
 ```typescript [Functional API]
 const User = s.object({

@@ -63,9 +63,7 @@ usage:
 
 ## Plugins & extensions
 
-plugins:
-marketplace: https://tsed.dev/plugins/
-api: https://api.tsed.dev/rest/warehouse
+plugins: https://api.tsed.dev/rest/warehouse
 notes:
 
 - Discover community and premium plugins to extend the framework (auth, logging, integrations, etc.).
@@ -75,24 +73,23 @@ notes:
 
 links:
 
-- getting_started: https://tsed.dev/introduction/getting-started
-- controllers: https://tsed.dev/docs/controllers
-- routing: https://tsed.dev/docs/routing
-- di_providers: https://tsed.dev/docs/providers
-- models: https://tsed.dev/docs/model
-- validation: https://tsed.dev/docs/validation
-- middlewares: https://tsed.dev/docs/middlewares
-- pipes: https://tsed.dev/docs/pipes
-- interceptors: https://tsed.dev/docs/interceptors
-- authentication: https://tsed.dev/docs/authentication
-- exceptions: https://tsed.dev/docs/exceptions
-- request_context: https://tsed.dev/docs/request-context
-- swagger_openapi: https://tsed.dev/tutorials/swagger
-- testing: https://tsed.dev/docs/testing
-- best_practices: https://tsed.dev/introduction/cheat-sheet
-- cli: https://tsed.dev/docs/commands.html
-- plugins_marketplace: https://tsed.dev/plugins/
-- plugins_api: https://api.tsed.dev/rest/warehouse
+- getting_started: https://tsed.dev/ai/introduction/getting-started.md
+- controllers: https://tsed.dev/ai/docs/controllers.md
+- routing: https://tsed.dev/ai/docs/routing.md
+- di_providers: https://tsed.dev/ai/docs/providers.md
+- models: https://tsed.dev/ai/docs/model.md
+- validation: https://tsed.dev/ai/docs/validation.md
+- middlewares: https://tsed.dev/ai/docs/middlewares.md
+- pipes: https://tsed.dev/ai/docs/pipes.md
+- interceptors: https://tsed.dev/ai/docs/interceptors.md
+- authentication: https://tsed.dev/ai/docs/authentication.md
+- exceptions: https://tsed.dev/ai/docs/exceptions.md
+- request_context: https://tsed.dev/ai/docs/request-context.md
+- swagger_openapi: https://tsed.dev/ai/tutorials/swagger.md
+- testing: https://tsed.dev/ai/docs/testing.md
+- best_practices: https://tsed.dev/ai/introduction/cheat-sheet.md
+- cli: https://tsed.dev/ai/docs/commands.md
+- plugins list: https://api.tsed.dev/rest/warehouse
 
 ## Guardrails for AI
 

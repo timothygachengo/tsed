@@ -16,7 +16,8 @@ This tutorial show yous how you can use [Objection.js](https://vincit.github.io/
 
 ## Installation
 
-Before using the `@tsed/objection` package, we need to install the [Obection.js](https://www.npmjs.com/package/objection) and [Knex](https://www.npmjs.com/package/knex) modules.
+Before using the `@tsed/objection` package, we need to install
+the [Obection.js](https://www.npmjs.com/package/objection) and [Knex](https://www.npmjs.com/package/knex) modules.
 
 Install the dependencies:
 
@@ -94,7 +95,8 @@ class Server {}
 
 ## Usage
 
-You can use the @@Entity@@ decorator to create your models and make them work with Objection.js. `Entity` expects the table name as its argument.
+You can use the @@Entity@@ decorator to create your models and make them work with Objection.js. `Entity` expects the
+table name as its argument.
 
 ```typescript
 import {Required, MinLength, MaxLength} from "@tsed/schema";
@@ -124,11 +126,15 @@ export class User extends Model {
 
 ## Relationships
 
-Ts.ED enables you to define relationships between models on properties directly, using decorators such as @@BelongsToOne@@, @@HasMany@@, @@HasOne@@, @@HasOneThroughRelation@@, @@ManyToMany@@ or @@RelatesTo@@.
+Ts.ED enables you to define relationships between models on properties directly, using decorators such as
+@@BelongsToOne@@, @@HasMany@@, @@HasOne@@, @@HasOneThroughRelation@@, @@ManyToMany@@ or @@RelatesTo@@.
 
-You can supply a configuration object via (@@RelationshipOpts@@) into the decorator factor to override the default join keys and configure a relationship like you normally would via `relationMappings`. For collection-type relationships, you must also specify the model you wish to use and we will also apply the @@CollectionOf@@ decorator for you automatically.
+You can supply a configuration object via (@@RelationshipOpts@@) into the decorator factor to override the default join
+keys and configure a relationship like you normally would via `relationMappings`. For collection-type relationships, you
+must also specify the model you wish to use and we will also apply the @@CollectionOf@@ decorator for you automatically.
 
-This expressive usage ensures that your domain models are correctly typed for usage alongside [Objection.js's Graph API](https://vincit.github.io/objection.js/api/query-builder/eager-methods.html).
+This expressive usage ensures that your domain models are correctly typed for usage
+alongside [Objection.js's Graph API](https://vincit.github.io/objection.js/api/query-builder/eager-methods.html).
 
 ```typescript
 /**
@@ -163,7 +169,8 @@ const movie = await Movie.query().for(1).withGraphFetched("owner");
 
 ### Default joining keys
 
-When used in conjunction with @@Entity@@ and @@IdColumn@@, Ts.ED attempts to provide you with a sensible default for your join keys out of the box, reducing the amount of boilerplate you need to write.
+When used in conjunction with @@Entity@@ and @@IdColumn@@, Ts.ED attempts to provide you with a sensible default for
+your join keys out of the box, reducing the amount of boilerplate you need to write.
 
 In the instance of @@BelongsToOne@@, the default join keys will be:
 
@@ -205,7 +212,8 @@ In the instances of @@ManyToMany@@ and @@HasOneThroughRelation@@, the default jo
 ```
 
 ::: tip
-An example of the keys outputted above could be `user.id`, `user_authentication.userId`, `user_authentication.authenticationId` and `authentication.id` respectively.
+An example of the keys outputted above could be `user.id`, `user_authentication.userId`,
+`user_authentication.authenticationId` and `authentication.id` respectively.
 :::
 
 ## Get connection
@@ -226,7 +234,7 @@ class MyService {
 
 ## Migration
 
-Ts.ED can create columns based on the declared Model. Using @@createColumns@@, you can implement
+Ts.ED can create columns based on the declared Model. Using `createColumns`, you can implement
 a migration file as following:
 
 ```typescript

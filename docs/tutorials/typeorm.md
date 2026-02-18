@@ -314,7 +314,7 @@ Then inject your repository to another service:
 
 <<< @/tutorials/snippets/typeorm/typeorm-injection-entity-repository.ts
 
-::: tip Use @@UseConnection@@ decorator to select which database connection the injected repository should be used (
+::: tip Use `UseConnection` decorator to select which database connection the injected repository should be used (
 require Ts.ED v5.58.0+).
 :::
 

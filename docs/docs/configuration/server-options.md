@@ -84,7 +84,7 @@ See the [HTTPs project example](https://github.com/tsedio/example-ts-express-dec
 
 ## mount
 
-- type: @@EndpointDirectoriesSettings@@
+- type: @@Record<string, TokenProvider[]>@@
 
 Mount all given controllers and map controllers to the corresponding endpoints.
 
@@ -190,7 +190,8 @@ export class Server {
 
 ::: tip
 
-Prefer the 1st example if you use @@RawBodyParams@@ in your application. Ts.ED will automatically configure the json-parser and urlencoded parser with the rawBody parser.
+Prefer the 1st example if you use @@RawBodyParams@@ in your application. Ts.ED will automatically configure the
+json-parser and urlencoded parser with the rawBody parser.
 
 :::
 
@@ -239,7 +240,7 @@ Add providers or modules here. These modules or provider will be built before th
 
 ## logger
 
-- type: @@PlatformLoggerSettings@@
+- type: @@DILoggerOptions@@
 
 Logger configuration. See [logger section for more detail](/docs/logger).
 
@@ -275,7 +276,8 @@ Object configure Multer. See more on [Upload file](/docs/upload-files).
 
 - type: `boolean`
 
-Append children routes before the controller routes itself. Defaults to `false`, but will be deprecated and set to `true` in next major version.
+Append children routes before the controller routes itself. Defaults to `false`, but will be deprecated and set to
+`true` in next major version.
 
 ## jsonMapper
 
@@ -310,7 +312,8 @@ class MyModel {
 
 ### jsonMapper.strictGroups
 
-Enable strict mode for `@Groups` decorator. By default, `false`. See [Groups](/docs/model.md#groups-strict-mode) for more information.
+Enable strict mode for `@Groups` decorator. By default, `false`. See [Groups](/docs/model.md#groups-strict-mode) for
+more information.
 
 ::: warning
 The `strictGroups` option is enabled by default in the next major version of Ts.ED.

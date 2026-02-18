@@ -38,7 +38,8 @@ Currently, [`@tsed/mongoose`](https://www.npmjs.com/package/@tsed/mongoose) allo
 
 ## Installation
 
-Before using the `@tsed/mongoose` package, we need to install the [mongoose](https://www.npmjs.com/package/mongoose) module.
+Before using the `@tsed/mongoose` package, we need to install the [mongoose](https://www.npmjs.com/package/mongoose)
+module.
 ::: code-group
 
 ```bash [npm]
@@ -118,7 +119,8 @@ You can also use the common decorators to describe model (See [models](/docs/mod
 <<< @/tutorials/snippets/mongoose/declaring-schema.ts
 
 ::: tip
-Schema decorator accepts a second parameter to configure the Schema (See [Mongoose Schema](https://mongoosejs.com/docs/guide.html#options))
+Schema decorator accepts a second parameter to configure the Schema (
+See [Mongoose Schema](https://mongoosejs.com/docs/guide.html#options))
 :::
 
 ### Declaring Properties
@@ -144,7 +146,8 @@ Mongoose and `@tsed/mongoose` support both lists and maps.
 
 ### Subdocuments
 
-`@tsed/mongoose` supports `mongoose` subdocuments as long as they are defined as schemas. Therefore, subdocuments must be decorated by `@Schema()`.
+`@tsed/mongoose` supports `mongoose` subdocuments as long as they are defined as schemas. Therefore, subdocuments must
+be decorated by `@Schema()`.
 
 <<< @/tutorials/snippets/mongoose/subdocuments.ts
 
@@ -157,9 +160,11 @@ Mongoose and `@tsed/mongoose` support both lists and maps.
 ### Circular References
 
 `@tsed/mongoose` supports `mongoose` circular references between defined models.
-When you have models that either both refer to each other, or refer to themselves there is a slightly different way to declare this inside those models.
+When you have models that either both refer to each other, or refer to themselves there is a slightly different way to
+declare this inside those models.
 
-In this example, a **Customer** has many **Contracts** and each **Contract** has a reference back to the **Customer**. This is declared using an arrow function.
+In this example, a **Customer** has many **Contracts** and each **Contract** has a reference back to the **Customer**.
+This is declared using an arrow function.
 
 ```
 () => ModelName
@@ -190,19 +195,22 @@ This works by having a field with the referenced object model's name and a field
 
 ### Decimal Numbers
 
-`@tsed/mongoose` supports `mongoose` 128-bit decimal floating points data type [Decimal128](https://mongoosejs.com/docs/api.html#mongoose_Mongoose-Decimal128).
+`@tsed/mongoose` supports `mongoose` 128-bit decimal floating points data
+type [Decimal128](https://mongoosejs.com/docs/api.html#mongoose_Mongoose-Decimal128).
 
 The @@NumberDecimal@@ decorator is used to set Decimal128 type for number fields.
 
 <<< @/tutorials/snippets/mongoose/decimal-numbers.ts
 
-Optionally a custom decimal type implementation, such as [big.js](https://www.npmjs.com/package/big.js), can be used by passing a constructor to the field decorator.
+Optionally a custom decimal type implementation, such as [big.js](https://www.npmjs.com/package/big.js), can be used by
+passing a constructor to the field decorator.
 
 <<< @/tutorials/snippets/mongoose/extended-decimal-numbers.ts
 
 ## Register hook
 
-Mongoose allows the developer to add pre and post [hooks / middlewares](http://mongoosejs.com/docs/middleware.html) to the schema.
+Mongoose allows the developer to add pre and post [hooks / middlewares](http://mongoosejs.com/docs/middleware.html) to
+the schema.
 With this, it is possible to add document transformations and observations before or after validation, save, and more.
 
 Ts.ED provides class decorators to register middlewares on the pre- and post-hook.
@@ -227,32 +235,38 @@ This will execute the post-save hook each time a `CarModel` document is saved.
 
 ## Plugin
 
-Using the @@Plugin@@ decorator enables the developer to attach various Mongoose plugins to the schema.
-Just like the regular `schema.plugin()` call, the decorator accepts 1 or 2 parameters: the plugin itself, and an optional configuration object.
+Using the `Plugin` decorator enables the developer to attach various Mongoose plugins to the schema.
+Just like the regular `schema.plugin()` call, the decorator accepts 1 or 2 parameters: the plugin itself, and an
+optional configuration object.
 Multiple `plugin` decorator can be used for a single model class.
 
 <<< @/tutorials/snippets/mongoose/plugin.ts
 
 ## Discriminators
 
-Set the `@DiscriminatorKey` decorator on a property in the parent class to define the name of the field for the discriminator value.
+Set the `@DiscriminatorKey` decorator on a property in the parent class to define the name of the field for the
+discriminator value.
 
-Extend the child model classes from the parent class. By default, the value for the discriminator field is the class name, but it can be overwritten via the `discriminatorValue` option on the model.
+Extend the child model classes from the parent class. By default, the value for the discriminator field is the class
+name, but it can be overwritten via the `discriminatorValue` option on the model.
 
 <<< @/tutorials/snippets/mongoose/discriminator.ts
 
 ::: tip
-For further information, please refer to the [mongoose documentation about discriminators](https://mongoosejs.com/docs/discriminators.html).
+For further information, please refer to
+the [mongoose documentation about discriminators](https://mongoosejs.com/docs/discriminators.html).
 :::
 
 ## Document Versioning
 
-Set the `@VersionKey` decorator on a `number` property to define the name of the field used for versioning and optimistic concurrency.
+Set the `@VersionKey` decorator on a `number` property to define the name of the field used for versioning and
+optimistic concurrency.
 
 <<< @/tutorials/snippets/mongoose/version-key.ts
 
 ::: tip
-For further information, please refer to the [mongoose documentation about the versionKey option](https://mongoosejs.com/docs/guide.html#versionKey).
+For further information, please refer to
+the [mongoose documentation about the versionKey option](https://mongoosejs.com/docs/guide.html#versionKey).
 :::
 
 ## Inject model
@@ -318,7 +332,8 @@ export class MyRepository {
 
 ## Testing
 
-The [`@tsed/testcontainers-mongo`](https://www.npmjs.com/package/@tsed/testcontainers-mongo) package allows you to test your code using the [TestContainers](https://node.testcontainers.org/) library.
+The [`@tsed/testcontainers-mongo`](https://www.npmjs.com/package/@tsed/testcontainers-mongo) package allows you to test
+your code using the [TestContainers](https://node.testcontainers.org/) library.
 
 ### Configuration
 

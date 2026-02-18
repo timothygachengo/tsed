@@ -317,7 +317,7 @@ The @@Value@@ decorator or @@refValue@@ function is used to inject a mutable val
 <<< @/docs/snippets/providers/fn/binding-ref-value.ts [Functional API]
 :::
 
-Note that, @@value@@ function can be used anywhere in your code, not only in a DI context:
+Note that, @@refValue@@ function can be used anywhere in your code, not only in a DI context:
 
 ```ts
 function getMyValue(): string {
@@ -531,7 +531,8 @@ function doSomething() {
 
 ## Extending DIConfiguration
 
-The `DIConfiguration` class provides a `decorate` method that allows you to extend its functionality by adding new methods or properties. You can access this method through the `configuration()` function.
+The `DIConfiguration` class provides a `decorate` method that allows you to extend its functionality by adding new
+methods or properties. You can access this method through the `configuration()` function.
 
 ```typescript
 import {configuration} from "@tsed/di";
@@ -559,7 +560,8 @@ configuration().decorate("customProperty", {
 });
 ```
 
-This is particularly useful for plugin authors who want to extend the configuration capabilities without modifying the core code. For example, you could add methods to handle specific configuration patterns for your plugin:
+This is particularly useful for plugin authors who want to extend the configuration capabilities without modifying the
+core code. For example, you could add methods to handle specific configuration patterns for your plugin:
 
 ```typescript
 // In your plugin's initialization code
@@ -583,9 +585,11 @@ configuration().myPlugin({
 
 ## Using the $alterConfig:propertyKey Hook
 
-The `$alterConfig:propertyKey` hook allows you to intercept and modify configuration values before they are assigned to a property. This is useful when you need to transform, validate, or augment configuration values dynamically.
+The `$alterConfig:propertyKey` hook allows you to intercept and modify configuration values before they are assigned to
+a property. This is useful when you need to transform, validate, or augment configuration values dynamically.
 
-When a value is set in the configuration using the `set()` method, the DIConfiguration class internally calls the `$alter` hook with the pattern `$alterConfig:${propertyKey}`, passing the value as the second argument.
+When a value is set in the configuration using the `set()` method, the DIConfiguration class internally calls the
+`$alter` hook with the pattern `$alterConfig:${propertyKey}`, passing the value as the second argument.
 
 Here's how to use this hook:
 
@@ -614,4 +618,5 @@ This hook is particularly useful for:
 - Transforming configuration formats
 - Implementing cross-cutting concerns for configuration properties
 
-The hook is executed whenever the corresponding property is set, whether through direct assignment or through the `configuration().set()` method.
+The hook is executed whenever the corresponding property is set, whether through direct assignment or through the
+`configuration().set()` method.

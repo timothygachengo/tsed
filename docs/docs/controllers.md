@@ -514,7 +514,7 @@ Here is an example:
 
 ::: tip
 This example will produce a response with status code 400 and "Not a number" message.
-@@GlobalErrorHandlerMiddleware@@ will catch and format the error before sending it to the client.
+`GlobalErrorHandlerMiddleware` will catch and format the error before sending it to the client.
 :::
 
 ::: tip

@@ -16,21 +16,31 @@ Pipes should implement the @@PipeMethods@@ interface.
 Pipes have two typical use cases:
 
 - **Transformation**: transform input data to the desired output
-- **Validation**: evaluate input data and if valid, simply pass it through unchanged; otherwise, throw an exception when the data is incorrect
+- **Validation**: evaluate input data and if valid, simply pass it through unchanged; otherwise, throw an exception when
+  the data is incorrect
 
-Pipes are called when an Incoming request is handled by the controller route handler and operate on **the method's parameters**. It takes **Request** or **Response** object and transform theses object to the expected value.
+Pipes are called when an Incoming request is handled by the controller route handler and operate on **the method's
+parameters**. It takes **Request** or **Response** object and transform theses object to the expected value.
 
-Pipe receives the argument where it is placed. This means that each parameter can invoke a list of pipes, which can be different for each parameter.
+Pipe receives the argument where it is placed. This means that each parameter can invoke a list of pipes, which can be
+different for each parameter.
 
 ```typescript
 @Get("/")
-getMethod(@UsePipe(MyPipe) value: string, @UsePipe(MyPipe2) @UsePipe(MyPipe3) value2: string) {}
+getMethod(@UsePipe(MyPipe)
+value: string, @UsePipe(MyPipe2) @UsePipe(MyPipe3)
+value2: string
+)
+{
+}
 ```
 
 Finally, both transformation and validation must implement a `transform()` method and return the expected value.
 
 ::: tip
-Pipes run inside an exception zone. It means that when a Pipe throws an exception, it will be handled by the @@GlobalExceptionHandler@@. Given the above, it should be clear that when an exception is thrown in a Pipe, no controller method is subsequently executed.
+Pipes run inside an exception zone. It means that when a Pipe throws an exception, it will be handled by the
+@@PlatformExceptions@@. Given the above, it should be clear that when an exception is thrown in a Pipe, no
+controller method is subsequently executed.
 :::
 
 ## Built-in pipes
@@ -41,10 +51,12 @@ Ts.ED comes with the following pipes:
 - @@ValidationPipe@@,
 - @@DeserializerPipe@@
 
-These pipes are exported to allow pipes overriding. These decorators are commonly used by @@BodyParams@@, @@QueryParams@@, etc.
+These pipes are exported to allow pipes overriding. These decorators are commonly used by @@BodyParams@@,
+@@QueryParams@@, etc.
 In this case, the pipes are added by using @@UseParam@@ on a parameter.
 
-For example, the use of @@BodyParams@@ on a parameter calls the @@UseParams@@ with some options, and @@UseParams@@ calls also different decorators
+For example, the use of @@BodyParams@@ on a parameter calls the @@UseParam@@ with some options, and @@UseParam@@ calls
+also different decorators
 to add Pipes:
 
 ::: code-group
@@ -59,12 +71,14 @@ The **main idea** is, you are able to combine any pipes to reach the expected be
 
 Now let's build a validation pipe from scratch to understand the pipe mechanism.
 
-Initially, we'll have it simply take an input value and immediately return the same value, behaving like an identity function.
+Initially, we'll have it simply take an input value and immediately return the same value, behaving like an identity
+function.
 
 <<< @/docs/snippets/pipes/validation-pipe-identity.ts
 
 ::: tip
-`PipeMethods<T, R>` is a generic interface in which `T` indicates the type of the input value, and `R` indicates the return type of the `transform()` method.
+`PipeMethods<T, R>` is a generic interface in which `T` indicates the type of the input value, and `R` indicates the
+return type of the `transform()` method.
 :::
 
 Every pipe has to provide the `transform()` method. This method has two parameters:
@@ -72,7 +86,8 @@ Every pipe has to provide the `transform()` method. This method has two paramete
 - `value`
 - `metadata`
 
-The `value` is the currently processed argument (before it is received by the route handling method), while metadata is its `metadata`.
+The `value` is the currently processed argument (before it is received by the route handling method), while metadata is
+its `metadata`.
 The metadata object has these properties (see also @@ParamMetadata@@):
 
 ```typescript
@@ -105,17 +120,18 @@ These properties describe the current processed argument.
 | `store`          | @@Store@@ contains extra options collected by the decorators used on the parameter. |
 
 ::: warning
-TypeScript interfaces disappear during transpilation. Thus, if a method parameter's `type` is declared as an interface instead of a class, the type value will be `Object`.
+TypeScript interfaces disappear during transpilation. Thus, if a method parameter's `type` is declared as an interface
+instead of a class, the type value will be `Object`.
 :::
 
 ## Validation use case
 
 The goal of validation use case is to ensure that the input parameter is valid before using it in a method.
 
-Officially, Ts.ED has two way to declare a @@JsonShema@@ validation:
+Officially, Ts.ED has two way to declare a @@JsonSchema@@ validation:
 
 - With [model](/docs/model) decorators,
-- With @@UseSchema@@ decorator, it's a decorator Pipe provided by @tsed/ajv package.
+- With @@Schema@@ decorator.
 
 We'll take the model declaration to explain the Validation pipe use case. Let's focus on the `PersonModel`:
 
@@ -163,7 +179,8 @@ and throw an exception when the payload is not valid.
 <<< @/docs/snippets/pipes/validation-pipe-with-ajv.ts
 
 The validation pipe is a very specific use case because Ts.ED uses it automatically when a parameter is handled
-by the **routing request**. The previous pipe example, in order to work, needs to be registered with the @@OverrideProvider@@ decorator instead of @@Injectable@@.
+by the **routing request**. The previous pipe example, in order to work, needs to be registered with the
+@@OverrideProvider@@ decorator instead of @@Injectable@@.
 
 See more details on the [validation page](/docs/validation).
 
@@ -171,12 +188,15 @@ See more details on the [validation page](/docs/validation).
 
 Validation isn't the sole use case for **Pipes**.
 At the beginning of this chapter, we mentioned that a pipe can also **transform** the input data to the desired output.
-This is possible because the value returned from the transform function completely overrides the previous value of the argument.
+This is possible because the value returned from the transform function completely overrides the previous value of the
+argument.
 
-When is this useful? Consider that sometimes the data passed from the client needs to undergo some changes - _for example converting plain object javascript to class_ - before it can be properly handled by the route handler method.
+When is this useful? Consider that sometimes the data passed from the client needs to undergo some changes - _for
+example converting plain object javascript to class_ - before it can be properly handled by the route handler method.
 Furthermore, some required data fields may be missing, and we would like to apply default values.
 
-Transformer pipes can perform these functions by interposing a processing function between the client request and the request handler.
+Transformer pipes can perform these functions by interposing a processing function between the client request and the
+request handler.
 
 <<< @/docs/snippets/pipes/transformer-pipe.ts
 
@@ -185,7 +205,8 @@ We can simply tie this pipe to the selected param as shown below:
 <<< @/docs/snippets/pipes/transformer-pipe-usage.ts
 
 ::: tip
-On the previous example, we use @@RawPathParams@@ to get the raw value, without transformation or validation from existing Ts.ED Pipe.
+On the previous example, we use @@RawPathParams@@ to get the raw value, without transformation or validation from
+existing Ts.ED Pipe.
 :::
 
 ## Async transformation use case
@@ -226,7 +247,9 @@ In the previous section, we show you how to use a Pipe on a parameter:
 
 <<< @/docs/snippets/pipes/async-transformer-pipe-usage.ts
 
-In this example, our pipe need to be called with @@RawPathParams@@ two work properly, because our pipe return an instance of `PersonModel`. @@PathParams@@ call automatically the @@DeserializerPipe@@ and it's not what we want. This is why we using @@RawPathParams@@.
+In this example, our pipe need to be called with @@RawPathParams@@ two work properly, because our pipe return an
+instance of `PersonModel`. @@PathParams@@ call automatically the @@DeserializerPipe@@ and it's not what we want. This is
+why we using @@RawPathParams@@.
 
 To avoid future mistakes, it could be a good idea to summarize these two decorators in one as following:
 

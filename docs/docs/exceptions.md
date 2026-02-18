@@ -10,8 +10,10 @@ head:
 
 # Exceptions
 
-Ts.ED http exceptions provide classes to throw standard HTTP exceptions. These exceptions can be used on Controller, Middleware or injectable Service.
-Emitted exceptions will be handled by the @@PlatformExceptions@@ and formatted to a response with the right status code and headers.
+Ts.ED http exceptions provide classes to throw standard HTTP exceptions. These exceptions can be used on Controller,
+Middleware or injectable Service.
+Emitted exceptions will be handled by the @@PlatformExceptions@@ and formatted to a response with the right status code
+and headers.
 
 ::: tip
 This module can be used in standalone with a pure Express/Node.js application.
@@ -52,13 +54,15 @@ Here is two examples to throw exceptions based on this package in Ts.ED context 
 
 ## Custom exception
 
-It's possible to create your own exception by creating a class which inherit from @@Exception@@ or one of the built-in exception like @@BadRequest@@.
+It's possible to create your own exception by creating a class which inherit from @@Exception@@ or one of the built-in
+exception like @@BadRequest@@.
 
 Example:
 
 <<< @/docs/snippets/exceptions/custom-exception.ts
 
-Since IDFormatException extends the @@BadRequest@@, it will work seamlessly with the built-in exception handler, and therefore we can use it inside a controller method.
+Since IDFormatException extends the @@BadRequest@@, it will work seamlessly with the built-in exception handler, and
+therefore we can use it inside a controller method.
 
 <<< @/docs/snippets/exceptions/custom-exception-usage.ts
 
@@ -81,7 +85,7 @@ These are exposed from the @tsed/exceptions package, and represent many of the m
 
 ## Exception filter
 
-All errors are intercepted by the @@PlatformExceptionMiddleware@@.
+All errors are intercepted by the @@PlatformExceptions@@.
 
 By default, all HTTP Exceptions are automatically sent to the client, and technical errors are
 sent as Internal Server Error.
@@ -89,21 +93,26 @@ sent as Internal Server Error.
 The [Platform API](/docs/platform-api.md) provides @@Catch@@ decorator to catch error.
 It lets you control the exact flow of control and the content of the response sent back to the client.
 
-Let's create an exception filter that is responsible for catching exceptions which are an instance of the @@Exception@@ class,
+Let's create an exception filter that is responsible for catching exceptions which are an instance of the @@Exception@@
+class,
 and implementing custom response logic for them.
 
-To do this, we'll need to access the underlying platform Request and Response objects by using the @@Context@@ decorator.
+To do this, we'll need to access the underlying platform Request and Response objects by using the @@Context@@
+decorator.
 We'll access the Request object, so we can pull out the original url and include that in the logging information.
 We'll use the Response object to take direct control of the response that is sent, using the `response.body()` method.
 
 <<< @/docs/snippets/exceptions/http-exception-filter.ts
 
 ::: tip Note
-All exception filters should implement the generic `ExceptionFilterMethods<T>` interface. This requires you to provide the `catch(exception: T, ctx: Context)` method with its indicated signature. `T` indicates the type of the exception.
+All exception filters should implement the generic `ExceptionFilterMethods<T>` interface. This requires you to provide
+the `catch(exception: T, ctx: Context)` method with its indicated signature. `T` indicates the type of the exception.
 :::
 
-The `@Catch(Exception)` decorator binds the required metadata to the exception filter, telling Ts.ED that this particular filter is looking for exceptions of type @@Exception@@ and nothing else.
-The @@Catch@@ decorator may take a single parameter, or a comma-separated list. This lets you set up the filter for several types of exceptions at once.
+The `@Catch(Exception)` decorator binds the required metadata to the exception filter, telling Ts.ED that this
+particular filter is looking for exceptions of type @@Exception@@ and nothing else.
+The @@Catch@@ decorator may take a single parameter, or a comma-separated list. This lets you set up the filter for
+several types of exceptions at once.
 
 If you want to catch all errors, just use the @@Catch@@ decorator with the `Error` class:
 
@@ -120,7 +129,8 @@ Create a new ResourceNotFoundFilter in the filters directories and copy/paste th
 <<< @/docs/snippets/exceptions/resource-not-found-filter.ts
 
 ::: warning
-`response.render()` requires to configure the template engine before. See our page over [Templating engine](/docs/templating#installation) installation for more details.
+`response.render()` requires to configure the template engine before. See our page
+over [Templating engine](/docs/templating#installation) installation for more details.
 :::
 
 Then import the custom filter in your server:

@@ -105,7 +105,7 @@ action: [Form.io Builder](https://formio.tsed.dev/?path=/story/reactformio-formb
 
 ### Form
 
-The @@Form@@ decorator is used to mark a class as a Form.io form. It's required for the @@getFormioSchema@@ function to
+The @@Form@@ decorator is used to mark a class as a Form.io form. It's required for the `getFormioSchema` function to
 work properly.
 
 ```typescript
