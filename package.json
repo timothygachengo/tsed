@@ -55,9 +55,6 @@
     "prettier": "prettier '**/*.{ts,js,json,md,yml,yaml}' --write",
     "release": "semantic-release",
     "release:dryRun": "semantic-release --dry-run",
-    "benchmarks:prepare": "yarn build && rimraf ./benchmarks/node_modules/@tsed && cp -rf ./dist ./benchmarks/node_modules/@tsed",
-    "benchmarks:run": "cd benchmarks && yarn benchmarks",
-    "benchmarks": "yarn benchmarks:prepare && yarn benchmarks:run",
     "prepare": "is-ci || husky install"
   },
   "keywords": [
