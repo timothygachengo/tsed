@@ -5,27 +5,25 @@ import {Engine} from "./Engine.js";
 
 @ViewEngine("twing")
 export class TwingEngine extends Engine {
-  private instance: any;
-
   protected $compile(template: string, options: any): (options: any) => Promise<string> {
     const engine = this.engine;
 
-    if (!this.instance) {
-      let loader = new engine.TwingLoaderNull();
+    if (options.settings && options.settings.views && existsSync(options.settings.views)) {
+      const loader = engine.createFilesystemLoader(options.settings.views);
+      const environment = engine.createEnvironment(loader);
 
-      if (options.settings && options.settings.views && existsSync(options.settings.views)) {
-        loader = new engine.TwingLoaderFilesystem(options.settings.views);
-      }
-
-      this.instance = new engine.TwingEnvironment(loader);
+      return async (options: any) => {
+        return environment.render(template, options);
+      };
     }
 
-    const $cmp = this.instance.createTemplate(template);
-
     return async (options: any) => {
-      const compile = await $cmp;
+      const loader = engine.createArrayLoader({
+        "index.twig": template
+      });
+      const environment = engine.createEnvironment(loader);
 
-      return compile.render(options);
+      return environment.render("index.twig", options);
     };
   }
 }
