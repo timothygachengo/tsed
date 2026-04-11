@@ -50,7 +50,7 @@
     "mongodb": "^6.9.0",
     "mongoose": "8.9.5",
     "typescript": "6.0.2",
-    "vitest": "3.2.4"
+    "vitest": "4.1.4"
   },
   "peerDependencies": {
     "@tsed/platform-http": ">=8.0.0",
