@@ -2,6 +2,10 @@ import {getEngineFixture} from "../../test/getEngineFixture.js";
 import {RactiveEngine} from "./RactiveEngine.js";
 
 describe("RactiveEngine", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render the given content (by string - no cache)", async () => {
     const {render, locals, $compile, template} = await getEngineFixture({token: RactiveEngine});
     await render();

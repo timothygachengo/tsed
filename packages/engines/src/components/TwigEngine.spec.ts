@@ -2,6 +2,10 @@ import {getEngineFixture} from "../../test/getEngineFixture.js";
 import {TwigEngine} from "./TwigEngine.js";
 
 describe("TwigEngine", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render the given content (by string - no cache)", async () => {
     const {render, $compile, template} = await getEngineFixture({token: TwigEngine});
     await render();

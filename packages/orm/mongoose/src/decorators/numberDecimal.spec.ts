@@ -7,6 +7,10 @@ import {MONGOOSE_SCHEMA} from "../constants/constants.js";
 import {Decimal128, DecimalFormat, NumberDecimal} from "./numberDecimal.js";
 
 describe("@NumberDecimal()", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should declare a Decimal128 field", () => {
     // WHEN
     class Test {
@@ -150,13 +154,18 @@ describe("@NumberDecimal()", () => {
     }
 
     const fakePrice = new Decimal("1234.56");
-
     const obj = {Decimal};
-    vi.spyOn(obj, "Decimal").mockReturnValue(fakePrice);
+    vi.spyOn(obj, "Decimal").mockImplementation(
+      class DecimalMock {
+        constructor() {
+          return fakePrice;
+        }
+      } as any
+    );
 
     // WHEN
     class Model {
-      @NumberDecimal(obj.Decimal)
+      @NumberDecimal(obj.Decimal as any)
       price: Decimal;
     }
 
@@ -169,7 +178,6 @@ describe("@NumberDecimal()", () => {
     );
 
     expect(obj.Decimal).toHaveBeenCalledWith("1234.56");
-
     expect(result).toBeInstanceOf(Model);
     expect(result).toEqual({
       price: fakePrice
@@ -211,13 +219,18 @@ describe("@NumberDecimal()", () => {
 
     const testDecimal = Types.Decimal128.fromString("1234.56");
     const fakePrice = new Decimal("1234.56");
-
     const obj = {Decimal};
-    vi.spyOn(obj, "Decimal").mockReturnValue(fakePrice);
+    vi.spyOn(obj, "Decimal").mockImplementation(
+      class DecimalMock {
+        constructor() {
+          return fakePrice;
+        }
+      } as any
+    );
 
     // WHEN
     class Model {
-      @NumberDecimal(obj.Decimal)
+      @NumberDecimal(obj.Decimal as any)
       price: Decimal;
     }
 
@@ -242,18 +255,24 @@ describe("@NumberDecimal()", () => {
     }
 
     const fakePrice = new Decimal("1234.56");
-
     const obj = {Decimal};
-    vi.spyOn(obj, "Decimal").mockReturnValue(fakePrice);
+    vi.spyOn(obj, "Decimal").mockImplementation(
+      class DecimalMock {
+        constructor() {
+          return fakePrice;
+        }
+      } as any
+    );
 
     // WHEN
     class Model {
-      @NumberDecimal(obj.Decimal)
+      @NumberDecimal(obj.Decimal as any)
       price: Decimal;
     }
 
     const mdl = new Model();
     mdl.price = new Decimal("1234.56");
+    mdl.price = fakePrice;
 
     // THEN
     const store = Store.from(Model, "price");

@@ -5,6 +5,10 @@ import {requires} from "../utils/cache.js";
 import {SquirrellyEngine} from "./SquirrellyEngine.js";
 
 describe("SquirrellyEngine", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render the given content (by string - no cache)", async () => {
     const {render, locals, $compile, template} = await getEngineFixture({token: SquirrellyEngine});
     await render();

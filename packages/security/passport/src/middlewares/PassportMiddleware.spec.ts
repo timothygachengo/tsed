@@ -14,8 +14,9 @@ function createContextFixture(options = {}) {
 }
 
 describe("PassportMiddleware", () => {
-  beforeEach(() => {
-    PlatformTest.create();
+  beforeEach(async () => {
+    vi.restoreAllMocks();
+    await PlatformTest.create();
     vi.spyOn(Passport, "authenticate").mockImplementation(() => (req: any, res: any, next: any) => {
       return next();
     });
@@ -23,8 +24,9 @@ describe("PassportMiddleware", () => {
       return next();
     });
   });
-  afterEach(() => {
-    PlatformTest.reset();
+  afterEach(async () => {
+    await PlatformTest.reset();
+    vi.restoreAllMocks();
   });
   it("should call passport with local", async () => {
     // GIVEN

@@ -4,6 +4,10 @@ import {getEngineFixture} from "../../test/getEngineFixture.js";
 import {HoganEngine} from "./HoganEngine.js";
 
 describe("HoganEngine", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render the given content (by string - no cache)", async () => {
     const {render, locals, $compile, template} = await getEngineFixture({token: HoganEngine});
     await render();

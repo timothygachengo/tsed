@@ -8,8 +8,14 @@ import type {ApolloSettings} from "./interfaces/ApolloSettings.js";
 import {ApolloService} from "./services/ApolloService.js";
 
 describe("ApolloModule", () => {
-  beforeEach(() => PlatformTest.create());
-  afterEach(() => PlatformTest.reset());
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    return PlatformTest.create();
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+    return PlatformTest.reset();
+  });
 
   describe("settings", () => {
     it("should return apollo settings", () => {

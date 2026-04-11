@@ -39,14 +39,15 @@ describe("@tsed/config: refresh on Request", () => {
 
       expect(constant("test")).toEqual("string");
 
-      vi.spyOn(configs["test"] as any, "read").mockResolvedValueOnce({
+      const readSpy = vi.spyOn(configs["test"] as any, "read").mockResolvedValueOnce({
         test: "string-2",
         test2: "string-4"
       });
+      readSpy.mockClear();
 
       await $asyncEmit("$onRequest");
 
-      expect((configs["test"] as any).read).toHaveBeenCalledTimes(1);
+      expect(readSpy).toHaveBeenCalledTimes(1);
       expect(constant("test")).toEqual("string-2");
     });
   });
