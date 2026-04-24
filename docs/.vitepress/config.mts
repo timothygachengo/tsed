@@ -49,7 +49,7 @@ const Docs = [
     text: "Fundamentals",
     items: [
       {
-        text: "Introduction",
+        text: "Controllers",
         link: `/docs/controllers`
       },
       {
