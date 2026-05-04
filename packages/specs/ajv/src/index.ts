@@ -15,3 +15,5 @@ export * from "./services/Ajv.js";
 export * from "./services/AjvService.js";
 export * from "./utils/defaultErrorFormatter.js";
 export * from "./utils/getPath.js";
+export * from "./utils/mapClassError.js";
+export * from "./utils/mapErrors.js";

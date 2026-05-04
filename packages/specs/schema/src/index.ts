@@ -175,6 +175,7 @@ export * from "./utils/getComputedType.js";
 export * from "./utils/getInheritedStores.js";
 export * from "./utils/getJsonEntityStore.js";
 export * from "./utils/getJsonPathParameters.js";
+export * from "./utils/getJsonSchema.js";
 export * from "./utils/getJsonType.js";
 export * from "./utils/getOperationsRoutes.js";
 export * from "./utils/getOperationsStores.js";
