@@ -101,11 +101,13 @@ export class InjectorService extends Container {
    * @returns The resolved provider instance
    */
   get<T = any>(token: TokenProvider<T>, options?: Partial<InvokeOptions>): T {
-    if (!this.has(token)) {
+    const instance = this.#cache.get(token);
+
+    if (instance === undefined) {
       return this.resolve(token, options);
     }
 
-    return this.#cache.get(token);
+    return instance;
   }
 
   /**
@@ -510,44 +512,50 @@ export class InjectorService extends Container {
   }
 
   private resolveImportsProviders() {
-    this.settings.imports = this.settings.imports
-      ?.filter((meta) => isObject(meta) && "token" in meta && meta.token !== InjectorService)
-      .map((meta) => {
-        if (isObject(meta) && "token" in meta) {
-          const {token, ...props} = meta;
+    const imports = this.settings.imports;
 
-          const provider = this.ensureProvider(token, true);
+    if (!imports) {
+      return;
+    }
 
-          if (provider) {
-            provider.useValue = undefined;
-            provider.useAsyncFactory = undefined;
-            provider.useFactory = undefined;
+    const resolvedImports: (TokenProvider | ImportTokenProviderOpts)[] = [];
 
-            if ("useClass" in props) {
-              provider.useClass = props.useClass as TokenProvider;
-              return;
-            }
+    for (const meta of imports) {
+      if (!isObject(meta) || !("token" in meta) || meta.token === InjectorService) {
+        continue;
+      }
 
-            if ("useFactory" in props) {
-              provider.useFactory = props.useFactory as never;
-              return;
-            }
+      const {token, ...props} = meta;
+      const provider = this.ensureProvider(token, true);
 
-            if ("useAsyncFactory" in props) {
-              provider.useAsyncFactory = props.useAsyncFactory as never;
-              return;
-            }
+      provider.useValue = undefined;
+      provider.useAsyncFactory = undefined;
+      provider.useFactory = undefined;
 
-            if ("use" in props) {
-              provider.useValue = props.use as unknown;
-              return;
-            }
-          }
-        }
+      if ("useClass" in props) {
+        provider.useClass = props.useClass as TokenProvider;
+        continue;
+      }
 
-        return meta;
-      })
-      .filter(Boolean) as unknown as (TokenProvider | ImportTokenProviderOpts)[];
+      if ("useFactory" in props) {
+        provider.useFactory = props.useFactory as never;
+        continue;
+      }
+
+      if ("useAsyncFactory" in props) {
+        provider.useAsyncFactory = props.useAsyncFactory as never;
+        continue;
+      }
+
+      if ("use" in props) {
+        provider.useValue = props.use as unknown;
+        continue;
+      }
+
+      resolvedImports.push(meta);
+    }
+
+    this.settings.imports = resolvedImports;
   }
 
   /**

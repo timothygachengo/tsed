@@ -65,6 +65,14 @@ describe("Container", () => {
       expect(controllers.length > 0).toEqual(true);
       expect(middlewares.length > 0).toEqual(true);
     });
+
+    it("should return providers matching multiple types", () => {
+      const providers = container.getProviders([ProviderType.CONTROLLER, ProviderType.MIDDLEWARE]);
+      const hasInvalidType = providers.some((item: any) => ![ProviderType.CONTROLLER, ProviderType.MIDDLEWARE].includes(item.type));
+
+      expect(providers.length).toEqual(2);
+      expect(hasInvalidType).toBe(false);
+    });
   });
   describe("addProviders()", () => {
     it("should add providers", () => {
