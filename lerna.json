@@ -2,6 +2,7 @@
   "npmClient": "yarn",
   "packages": [
     "packages/*",
+    "packages/config/*",
     "packages/platform/*",
     "packages/orm/*",
     "packages/graphql/*",
@@ -14,9 +15,7 @@
   "version": "8.17.0",
   "command": {
     "bootstrap": {
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
+      "npmClientArgs": ["--no-package-lock"]
     }
   }
 }
