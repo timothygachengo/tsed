@@ -44,9 +44,11 @@ bun add @tsed/agenda agenda @agendajs/mongo-backend
 
 :::
 
-## Migration note
+## Migration to Agenda v6
 
-`@tsed/agenda` now uses Agenda v6.
+::: warning
+Since v8.30.0, `@tsed/agenda` uses Agenda v6.
+:::
 
 - `agenda.backend` is required
 - legacy top-level `db`, `mongo`, and `repository` config are no longer supported
@@ -78,6 +80,9 @@ bun add @tsed/agenda agenda @agendajs/mongo-backend
 
 Apply these deterministic rewrites when migrating code:
 
+```text
+Migrate to @tsed/agenda v8.30.0:
+
 - `import "@tsed/agenda"` stays unchanged
 - add `import {MongoBackend} from "@agendajs/mongo-backend"`
 - `agenda.db` → `agenda.backend: new MongoBackend(...)`
@@ -87,6 +92,7 @@ Apply these deterministic rewrites when migrating code:
 - `agenda.define(name, options, processor)` → `agenda.define(name, processor, options)`
 - `@Agenda(...)` → `@JobsController(...)`
 - `AgendaModule` → `Agenda` from `agenda`
+```
 
 ## Configure your server
 

@@ -55,12 +55,12 @@ bun add @tsed/pulse @pulsecron/pulse
 
 :::
 
-## Migration note
+## Migrate to Agenda
 
 Migrate from `@tsed/pulse` to `@tsed/agenda` on top of Agenda v6.
 
 ```diff
- import {Configuration} from "@tsed/di";
+import {Configuration} from "@tsed/di";
 -import "@tsed/pulse";
 +import "@tsed/agenda";
 +import {MongoBackend} from "@agendajs/mongo-backend";
@@ -84,11 +84,22 @@ Migrate from `@tsed/pulse` to `@tsed/agenda` on top of Agenda v6.
 
 Apply these deterministic rewrites:
 
+```text
+Migrate from @tsed/pulse to @tsed/agenda:
+
 - `import "@tsed/pulse"` → `import "@tsed/agenda"`
+- add `import {MongoBackend} from "@agendajs/mongo-backend"`
 - `@Pulse(...)` → `@JobsController(...)`
 - `PulseModule` → `Agenda` from `agenda`
 - `pulse` config key → `agenda`
+- `pulse.db.address` → `agenda.backend: new MongoBackend({address: ...})`
+- `pulse.db.collection` / `pulse.db.options` → `agenda.backend: new MongoBackend({collection, options})`
+- `pulse.mongo` / `pulse.repository` → `agenda.backend`
+- `pulse.ensureIndex` / `pulse.sort` → move into `new MongoBackend(...)`
 - `@pulsecron/pulse` dependency → `agenda` + `@agendajs/mongo-backend`
+
+For more details about @tsed/agenda, see [Agenda for Ts.ED](https://tsed.dev/ai/tutorials/agenda.md).
+```
 
 ## Configure your server
 
