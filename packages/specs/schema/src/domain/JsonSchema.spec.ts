@@ -2,7 +2,7 @@ import "../index.js";
 
 import {Ajv} from "ajv";
 
-import {CollectionOf, JsonEntityStore, Property, s} from "../index.js";
+import {CollectionOf, JsonEntityStore, Name, Property, Required, s} from "../index.js";
 import {JsonSchema} from "./JsonSchema.js";
 
 declare module "@tsed/schema" {
@@ -12,6 +12,20 @@ declare module "@tsed/schema" {
 }
 
 describe("JsonSchema", () => {
+  class KnowledgeSearchRequest {
+    @Required()
+    @Property()
+    type!: string;
+
+    @Name("top_k")
+    @Property()
+    topK!: number;
+
+    @Name("request_id")
+    @Property()
+    requestId?: string;
+  }
+
   describe("extra Props", () => {
     // https://json-schema.org/understanding-json-schema/basics.html
     it("should add extra props", () => {
@@ -256,6 +270,24 @@ describe("JsonSchema", () => {
       `);
     });
 
+    it("should preserve aliases when omitting properties from a Ts.ED model schema", () => {
+      const schema = JsonSchema.from(KnowledgeSearchRequest) as unknown as JsonSchema<KnowledgeSearchRequest>;
+
+      const omitted = schema.omit("type");
+
+      expect(omitted.toJSON()).toEqual({
+        type: "object",
+        properties: {
+          top_k: {
+            type: "number"
+          },
+          request_id: {
+            type: "string"
+          }
+        }
+      });
+    });
+
     it("should mark all properties optional via partial()", () => {
       const schema = buildUserSchema();
 
@@ -284,6 +316,28 @@ describe("JsonSchema", () => {
           "type": "object",
         }
       `);
+    });
+
+    it("should preserve aliases when marking a Ts.ED model schema as partial", () => {
+      const schema = JsonSchema.from(KnowledgeSearchRequest) as unknown as JsonSchema<KnowledgeSearchRequest>;
+
+      const partial = schema.partial();
+
+      expect(partial.toJSON()).toEqual({
+        type: "object",
+        properties: {
+          type: {
+            minLength: 1,
+            type: "string"
+          },
+          top_k: {
+            type: "number"
+          },
+          request_id: {
+            type: "string"
+          }
+        }
+      });
     });
 
     it("should merge schemas", () => {

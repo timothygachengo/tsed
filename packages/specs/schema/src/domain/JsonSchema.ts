@@ -1635,7 +1635,7 @@ export class JsonSchema<T = JSONSchema7Type> extends Map<string, any> {
       this.$allow.push(...obj.$allow);
 
       this.#required = new Set(obj.#required.keys());
-      this.#alias = new Map(this.#alias.entries());
+      this.#alias = new Map(obj.#alias.entries());
       this.#vendors = new Map(obj.#vendors.entries());
       this.#discriminator = this.#discriminator ? new Discriminator(this.#discriminator) : null;
       this.isDiscriminator = obj.isDiscriminator;
