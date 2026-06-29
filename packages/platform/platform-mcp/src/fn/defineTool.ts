@@ -1,7 +1,8 @@
 import type {RequestHandlerExtra} from "@modelcontextprotocol/sdk/shared/protocol.js";
 import type {CallToolResult, ServerNotification, ServerRequest, Tool, ToolAnnotations} from "@modelcontextprotocol/sdk/types.js";
-import {type AbstractType, isArrowFn, type Type} from "@tsed/core";
+import {type AbstractType, isArrowFn, isClass, type Type} from "@tsed/core";
 import {context, inject, injectable, logger, type TokenProvider} from "@tsed/di";
+import {deserialize} from "@tsed/json-mapper";
 import {JsonEntityStore, JsonMethodStore, JsonSchema} from "@tsed/schema";
 import {constantCase} from "change-case";
 
@@ -57,6 +58,11 @@ export type ClassToolProps<Input, Output = undefined> = BaseToolProps<Input, Out
  */
 export type ToolProps<Input, Output = undefined> = FnToolProps<Input, Output> | ClassToolProps<Input, Output>;
 
+type MappedToolOptions<Input, Output = undefined> = Omit<ToolProps<Input, Output>, "token" | "propertyKey"> & {
+  handler: ToolCallback<Input>;
+  inputStore?: JsonEntityStore;
+};
+
 function getOutputSchema<Output>(methodStore: JsonMethodStore): JsonSchema<Output> {
   const schema: JsonSchema = methodStore.operation.getResponseOf(200)?.getMedia("application/json")?.get("schema");
 
@@ -67,11 +73,35 @@ function getInputSchema<Input>(token: Type<any> | AbstractType<any>, propertyKey
   return JsonEntityStore.from(token, propertyKey, 0).schema?.itemSchema() as JsonSchema<Input>;
 }
 
-function mapOptions<Input, Output = undefined>(options: ToolProps<Input, Output>) {
+function resolveInputSchema<Input>(inputSchema: JsonSchema<Input> | (() => JsonSchema<Input>) | Tool["inputSchema"] | undefined) {
+  return isArrowFn(inputSchema) ? inputSchema() : inputSchema;
+}
+
+function deserializeInput<Input>(args: Input, inputSchema: unknown, inputStore?: JsonEntityStore): Input {
+  if (!(inputSchema instanceof JsonSchema)) {
+    return args;
+  }
+
+  const type = inputStore?.getBestType?.() || inputSchema.getTarget();
+
+  if (!type || type === Object || !isClass(type)) {
+    return args;
+  }
+
+  return deserialize(args, {
+    type,
+    store: inputStore,
+    useAlias: true
+  }) as Input;
+}
+
+function mapOptions<Input, Output = undefined>(options: ToolProps<Input, Output>): MappedToolOptions<Input, Output> {
   let handler: ToolCallback<Input>;
+  let inputStore: JsonEntityStore | undefined;
 
   if ("propertyKey" in options) {
     const {token, propertyKey} = options;
+    inputStore = JsonEntityStore.from(token, propertyKey, 0);
     handler = (args: Input, extra: any) => {
       const instance = inject(options.token) as any;
       return instance[options.propertyKey](args, extra);
@@ -79,7 +109,7 @@ function mapOptions<Input, Output = undefined>(options: ToolProps<Input, Output>
 
     const methodStore = JsonEntityStore.fromMethod(token, propertyKey);
     options.description = options.description || methodStore.operation.get("description");
-    options.inputSchema = options.inputSchema || getInputSchema(token, propertyKey);
+    options.inputSchema = options.inputSchema || inputStore.schema?.itemSchema() || getInputSchema(token, propertyKey);
     options.outputSchema = options.outputSchema || getOutputSchema(methodStore);
   } else {
     handler = options.handler;
@@ -87,7 +117,8 @@ function mapOptions<Input, Output = undefined>(options: ToolProps<Input, Output>
 
   return {
     ...options,
-    handler
+    handler,
+    inputStore
   };
 }
 
@@ -115,16 +146,19 @@ export function defineTool<Input, Output = undefined>(options: ToolProps<Input, 
   const provider = injectable(Symbol.for(`MCP:TOOL:${options.name}`))
     .type(MCP_PROVIDER_TYPES.TOOL)
     .factory(() => {
-      let {handler, ...opts} = mapOptions(options);
+      const {handler, inputStore, ...opts} = mapOptions(options);
+      const inputSchema = resolveInputSchema(opts.inputSchema);
 
       return {
         ...opts,
         name: opts.name,
-        inputSchema: toZod(isArrowFn(opts.inputSchema) ? opts.inputSchema() : opts.inputSchema),
+        inputSchema: toZod(inputSchema, {
+          useAlias: true
+        }),
         outputSchema: toZod(opts.outputSchema),
         async handler(args: Input, extra: RequestHandlerExtra<ServerRequest, ServerNotification>) {
           try {
-            return await handler(args as Input, extra);
+            return await handler(deserializeInput(args, inputSchema, inputStore), extra);
           } catch (er: any) {
             const code = er.name && er.status ? `E_MCP_TOOL_${constantCase(er.name)}` : "E_MCP_TOOL_ERROR";
             logger().error({

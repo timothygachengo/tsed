@@ -1,5 +1,6 @@
 import {inject} from "@tsed/di";
 import {PlatformTest} from "@tsed/platform-http/testing";
+import {JsonSchema} from "@tsed/schema";
 import {afterEach, beforeEach, describe, expect, it} from "vitest";
 
 import {defineTool} from "./defineTool.js";
@@ -50,6 +51,38 @@ describe("defineTool", () => {
       message: "Not found",
       request_id: expect.any(String),
       tool: "http-tool"
+    });
+  });
+
+  it("should expose aliased input schema properties", () => {
+    const token = defineTool<any>({
+      name: "aliased-tool",
+      inputSchema: JsonSchema.from({
+        type: "object",
+        properties: {
+          prop: {
+            type: "string"
+          }
+        },
+        required: ["prop"]
+      }).addAlias("prop", "aliasProp"),
+      handler() {
+        return {content: []};
+      }
+    });
+
+    const definition = inject<any>(token);
+
+    expect(definition.inputSchema.toJSONSchema()).toEqual({
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        aliasProp: {
+          type: "string"
+        }
+      },
+      required: ["aliasProp"],
+      additionalProperties: false
     });
   });
 });
