@@ -1,9 +1,27 @@
 import {inject} from "@tsed/di";
 import {PlatformTest} from "@tsed/platform-http/testing";
-import {JsonSchema} from "@tsed/schema";
+import {Default, from, JsonSchema, Name, Property} from "@tsed/schema";
 import {afterEach, beforeEach, describe, expect, it} from "vitest";
 
 import {defineTool} from "./defineTool.js";
+
+class KnowledgeSearchRequest {
+  @Property()
+  query!: string;
+
+  @Default(10)
+  @Name("top_k")
+  @Property()
+  topK: number = 10;
+
+  @Name("request_id")
+  @Property()
+  requestId?: string;
+
+  constructor(props: Partial<KnowledgeSearchRequest> = {}) {
+    Object.assign(this, props);
+  }
+}
 
 describe("defineTool", () => {
   beforeEach(() => PlatformTest.create());
@@ -84,5 +102,31 @@ describe("defineTool", () => {
       required: ["aliasProp"],
       additionalProperties: false
     });
+  });
+
+  it("should deserialize functional tool input from a Ts.ED model schema", async () => {
+    const token = defineTool<KnowledgeSearchRequest>({
+      name: "knowledge-search",
+      inputSchema: from(KnowledgeSearchRequest).omit("query"),
+      handler(input) {
+        expect(input).toBeInstanceOf(KnowledgeSearchRequest);
+        expect(input.topK).toBe(12);
+        expect(input.requestId).toBe("req-123");
+
+        return {
+          content: []
+        };
+      }
+    });
+
+    const definition = inject<any>(token);
+
+    await definition.handler(
+      {
+        top_k: 12,
+        request_id: "req-123"
+      },
+      {} as any
+    );
   });
 });

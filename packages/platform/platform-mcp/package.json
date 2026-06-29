@@ -35,6 +35,7 @@
     "@tsed/barrels": "workspace:*",
     "@tsed/core": "workspace:*",
     "@tsed/di": "workspace:*",
+    "@tsed/json-mapper": "workspace:*",
     "@tsed/platform-http": "workspace:*",
     "@tsed/schema": "workspace:*",
     "@tsed/typescript": "workspace:*",
@@ -45,6 +46,7 @@
   "peerDependencies": {
     "@tsed/core": ">=8.0.0",
     "@tsed/di": ">=8.0.0",
+    "@tsed/json-mapper": ">=8.0.0",
     "@tsed/platform-http": ">=8.0.0",
     "@tsed/schema": ">=8.0.0"
   },
@@ -53,6 +55,9 @@
       "optional": false
     },
     "@tsed/di": {
+      "optional": false
+    },
+    "@tsed/json-mapper": {
       "optional": false
     },
     "@tsed/platform-http": {

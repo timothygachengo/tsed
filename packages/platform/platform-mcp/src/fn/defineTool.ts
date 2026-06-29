@@ -109,7 +109,8 @@ function mapOptions<Input, Output = undefined>(options: ToolProps<Input, Output>
 
     const methodStore = JsonEntityStore.fromMethod(token, propertyKey);
     options.description = options.description || methodStore.operation.get("description");
-    options.inputSchema = options.inputSchema || inputStore.schema?.itemSchema() || getInputSchema(token, propertyKey);
+    options.inputSchema =
+      options.inputSchema || ((inputStore.schema?.itemSchema() || getInputSchema(token, propertyKey)) as JsonSchema<Input>);
     options.outputSchema = options.outputSchema || getOutputSchema(methodStore);
   } else {
     handler = options.handler;
